@@ -1,3 +1,695 @@
+/**
+ * Estilos principales para WebCraft Academy
+ * Tema: Soft Neo-brutalism
+ */
+
+/* Variables CSS para gestión de temas */
+:root {
+    /* Colores principales - Tema claro */
+    --color-primary: #ff5757;       /* Rojo intenso */
+    --color-secondary: #3d55e1;     /* Azul intenso */
+    --color-accent: #ff9e2c;        /* Naranja */
+    --color-dark: #111111;          /* Negro para contraste */
+    --color-light: #ffffff;         /* Blanco */
+    
+    /* Conversiones RGB para manipulaciones */
+    --color-primary-rgb: 255, 87, 87;
+    --color-secondary-rgb: 61, 85, 225;
+    --color-accent-rgb: 255, 158, 44;
+    
+    /* Variaciones de colores principales */
+    --color-primary-light: #ff7b7b;
+    --color-primary-dark: #e23e3e;
+    --color-secondary-light: #5f74e8;
+    --color-secondary-dark: #2a3cad;
+    --color-accent-light: #ffb75c;
+    --color-accent-dark: #e08620;
+    
+    /* Colores de fondo y texto - Tema claro */
+    --bg-color-primary: #ffffff;
+    --bg-color-secondary: #f5f5f5;
+    --text-color-primary: #111111;
+    --text-color-secondary: #555555;
+    --border-color: #dddddd;
+    
+    /* Espaciados consistentes */
+    --spacing-xs: 0.25rem;  /* 4px */
+    --spacing-sm: 0.5rem;   /* 8px */
+    --spacing-md: 1rem;     /* 16px */
+    --spacing-lg: 1.5rem;   /* 24px */
+    --spacing-xl: 2rem;     /* 32px */
+    --spacing-xxl: 3rem;    /* 48px */
+    
+    /* Bordes y sombras */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --box-shadow-sm: 4px 4px 0 var(--color-dark);
+    --box-shadow-md: 6px 6px 0 var(--color-dark);
+    --box-shadow-lg: 8px 8px 0 var(--color-dark);
+    
+    /* Transiciones */
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    
+    /* Fuentes */
+    --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --font-family-heading: 'Outfit', var(--font-family-base);
+    --font-family-code: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    
+    /* Tamaños de fuente */
+    --font-size-xs: 0.75rem;   /* 12px */
+    --font-size-sm: 0.875rem;  /* 14px */
+    --font-size-md: 1rem;      /* 16px */
+    --font-size-lg: 1.125rem;  /* 18px */
+    --font-size-xl: 1.25rem;   /* 20px */
+    --font-size-xxl: 1.5rem;   /* 24px */
+    --font-size-xxxl: 2rem;    /* 32px */
+    --font-size-xxxxl: 2.5rem; /* 40px */
+}
+
+/* Tema Oscuro */
+[data-theme="dark"] {
+    /* Colores de fondo y texto - Tema oscuro */
+    --bg-color-primary: #121212;
+    --bg-color-secondary: #1e1e1e;
+    --text-color-primary: #f5f5f5;
+    --text-color-secondary: #aaaaaa;
+    --border-color: #333333;
+    
+    /* Ajustes de colores para tema oscuro */
+    --color-primary: #ff6b6b;     /* Versión más clara para oscuro */
+    --color-secondary: #5c72e4;   /* Versión más clara para oscuro */
+    --color-accent: #ffb74d;      /* Versión más clara para oscuro */
+    
+    /* Sombras ajustadas para tema oscuro */
+    --box-shadow-sm: 4px 4px 0 rgba(255, 255, 255, 0.2);
+    --box-shadow-md: 6px 6px 0 rgba(255, 255, 255, 0.2);
+    --box-shadow-lg: 8px 8px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family-base);
+    background-color: var(--bg-color-primary);
+    color: var(--text-color-primary);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Tipografía */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-heading);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+h1 {
+    font-size: var(--font-size-xxxxl);
+    font-weight: 800;
+}
+
+h2 {
+    font-size: var(--font-size-xxxl);
+}
+
+h3 {
+    font-size: var(--font-size-xxl);
+}
+
+h4 {
+    font-size: var(--font-size-xl);
+}
+
+h5 {
+    font-size: var(--font-size-lg);
+}
+
+h6 {
+    font-size: var(--font-size-md);
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+a {
+    color: var(--color-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-secondary-dark);
+    text-decoration: underline;
+}
+
+/* Botones con estilo neo-brutalism */
+.btn {
+    display: inline-block;
+    text-align: center;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid;
+    border-radius: var(--border-radius-md);
+    transition: all var(--transition-medium);
+    cursor: pointer;
+    text-decoration: none;
+    font-size: var(--font-size-md);
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+    box-shadow: var(--box-shadow-sm);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--box-shadow-md);
+}
+
+.btn-primary:active {
+    transform: translate(0, 0);
+    box-shadow: none;
+}
+
+.btn-secondary {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    color: white;
+    box-shadow: var(--box-shadow-sm);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-secondary-dark);
+    border-color: var(--color-secondary-dark);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--box-shadow-md);
+}
+
+.btn-secondary:active {
+    transform: translate(0, 0);
+    box-shadow: none;
+}
+
+.btn-accent {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-dark);
+    box-shadow: var(--box-shadow-sm);
+}
+
+.btn-accent:hover {
+    background-color: var(--color-accent-dark);
+    border-color: var(--color-accent-dark);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--box-shadow-md);
+}
+
+.btn-accent:active {
+    transform: translate(0, 0);
+    box-shadow: none;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border-color: var(--text-color-primary);
+    color: var(--text-color-primary);
+    box-shadow: var(--box-shadow-sm);
+}
+
+.btn-outline:hover {
+    background-color: var(--bg-color-secondary);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--box-shadow-md);
+}
+
+.btn-outline:active {
+    transform: translate(0, 0);
+    box-shadow: none;
+}
+
+/* Enlaces de botón */
+.btn-link {
+    display: inline-block;
+    color: var(--color-secondary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color var(--transition-fast);
+}
+
+.btn-link:hover {
+    color: var(--color-secondary-dark);
+    text-decoration: underline;
+}
+
+/* Tarjetas con estilo Neo-brutalism */
+.card {
+    background-color: var(--bg-color-primary);
+    border: 3px solid var(--color-dark);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    box-shadow: var(--box-shadow-md);
+    transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+}
+
+.card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: var(--box-shadow-lg);
+}
+
+.card-title {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+}
+
+.card-subtitle {
+    font-size: var(--font-size-md);
+    color: var(--text-color-secondary);
+    margin-bottom: var(--spacing-md);
+}
+
+.card-body {
+    font-size: var(--font-size-md);
+}
+
+.card-footer {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 2px solid var(--border-color);
+}
+
+/* Layout y contenedores */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 var(--spacing-lg);
+    margin: 0 auto;
+}
+
+.section {
+    padding: var(--spacing-xxl) 0;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background-color: var(--color-accent);
+    border-radius: 3px;
+}
+
+/* Grid personalizado - complemento al Bootstrap Grid */
+.grid {
+    display: grid;
+    gap: var(--spacing-lg);
+}
+
+.grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* Responsive para grid personalizado */
+@media (max-width: 992px) {
+    .grid-4 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-3, .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Header y navegación principal */
+.main-header {
+    background-color: var(--bg-color-primary);
+    border-bottom: 3px solid var(--color-dark);
+    padding: var(--spacing-md) 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-xl);
+    font-weight: 800;
+    color: var(--text-color-primary);
+    text-decoration: none;
+}
+
+.navbar-brand img {
+    height: 40px;
+}
+
+.navbar-brand:hover {
+    text-decoration: none;
+    color: var(--color-accent);
+}
+
+.navbar-nav {
+    display: flex;
+    list-style: none;
+    gap: var(--spacing-lg);
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-link {
+    font-weight: 600;
+    color: var(--text-color-primary);
+    text-decoration: none;
+    padding: var(--spacing-sm) var(--spacing-sm);
+    transition: color var(--transition-fast);
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--color-accent);
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--color-accent);
+    border-radius: 1.5px;
+}
+
+/* Botones de navegación para móvil */
+.menu-toggle {
+    display: none;
+    font-size: var(--font-size-xl);
+    background: none;
+    border: none;
+    color: var(--text-color-primary);
+    cursor: pointer;
+}
+
+/* Contenedor de botones de navegación */
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+/* Botón de cambio de tema */
+.theme-toggle {
+    background: none;
+    border: none;
+    color: var(--text-color-primary);
+    font-size: var(--font-size-lg);
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color var(--transition-fast);
+}
+
+.theme-toggle:hover {
+    background-color: var(--bg-color-secondary);
+}
+
+/* Footer */
+.main-footer {
+    background-color: var(--bg-color-secondary);
+    padding: var(--spacing-xl) 0;
+    border-top: 3px solid var(--color-dark);
+    margin-top: auto;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: var(--spacing-xl);
+}
+
+.footer-about h3 {
+    margin-bottom: var(--spacing-md);
+}
+
+.footer-links h4 {
+    margin-bottom: var(--spacing-md);
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: var(--spacing-sm);
+}
+
+.footer-links a {
+    color: var(--text-color-secondary);
+    transition: color var(--transition-fast);
+}
+
+.footer-links a:hover {
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
+.footer-social {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--bg-color-primary);
+    color: var(--text-color-primary);
+    font-size: var(--font-size-lg);
+    transition: all var(--transition-fast);
+    border: 2px solid var(--color-dark);
+    box-shadow: 2px 2px 0 var(--color-dark);
+}
+
+.social-icon:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--color-dark);
+    color: var(--color-accent);
+}
+
+.footer-bottom {
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--text-color-secondary);
+}
+
+/* Utilidades */
+.text-center {
+    text-align: center;
+}
+
+.mt-0 { margin-top: 0; }
+.mt-1 { margin-top: var(--spacing-xs); }
+.mt-2 { margin-top: var(--spacing-sm); }
+.mt-3 { margin-top: var(--spacing-md); }
+.mt-4 { margin-top: var(--spacing-lg); }
+.mt-5 { margin-top: var(--spacing-xl); }
+
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: var(--spacing-xs); }
+.mb-2 { margin-bottom: var(--spacing-sm); }
+.mb-3 { margin-bottom: var(--spacing-md); }
+.mb-4 { margin-bottom: var(--spacing-lg); }
+.mb-5 { margin-bottom: var(--spacing-xl); }
+
+.ml-0 { margin-left: 0; }
+.ml-1 { margin-left: var(--spacing-xs); }
+.ml-2 { margin-left: var(--spacing-sm); }
+.ml-3 { margin-left: var(--spacing-md); }
+.ml-4 { margin-left: var(--spacing-lg); }
+.ml-5 { margin-left: var(--spacing-xl); }
+
+.mr-0 { margin-right: 0; }
+.mr-1 { margin-right: var(--spacing-xs); }
+.mr-2 { margin-right: var(--spacing-sm); }
+.mr-3 { margin-right: var(--spacing-md); }
+.mr-4 { margin-right: var(--spacing-lg); }
+.mr-5 { margin-right: var(--spacing-xl); }
+
+.pt-0 { padding-top: 0; }
+.pt-1 { padding-top: var(--spacing-xs); }
+.pt-2 { padding-top: var(--spacing-sm); }
+.pt-3 { padding-top: var(--spacing-md); }
+.pt-4 { padding-top: var(--spacing-lg); }
+.pt-5 { padding-top: var(--spacing-xl); }
+
+.pb-0 { padding-bottom: 0; }
+.pb-1 { padding-bottom: var(--spacing-xs); }
+.pb-2 { padding-bottom: var(--spacing-sm); }
+.pb-3 { padding-bottom: var(--spacing-md); }
+.pb-4 { padding-bottom: var(--spacing-lg); }
+.pb-5 { padding-bottom: var(--spacing-xl); }
+
+.pl-0 { padding-left: 0; }
+.pl-1 { padding-left: var(--spacing-xs); }
+.pl-2 { padding-left: var(--spacing-sm); }
+.pl-3 { padding-left: var(--spacing-md); }
+.pl-4 { padding-left: var(--spacing-lg); }
+.pl-5 { padding-left: var(--spacing-xl); }
+
+.pr-0 { padding-right: 0; }
+.pr-1 { padding-right: var(--spacing-xs); }
+.pr-2 { padding-right: var(--spacing-sm); }
+.pr-3 { padding-right: var(--spacing-md); }
+.pr-4 { padding-right: var(--spacing-lg); }
+.pr-5 { padding-right: var(--spacing-xl); }
+
+/* Media queries para responsive */
+@media (max-width: 992px) {
+    html {
+        font-size: 15px;
+    }
+    
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-lg) var(--spacing-xl);
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+    
+    .navbar-nav {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        height: 0;
+        flex-direction: column;
+        background-color: var(--bg-color-primary);
+        overflow: hidden;
+        transition: height var(--transition-medium);
+        z-index: 1000;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .navbar-nav.active {
+        height: auto;
+        padding: var(--spacing-md) 0;
+        border-bottom: 3px solid var(--color-dark);
+    }
+    
+    .nav-link.active::after {
+        width: 50%;
+        left: 25%;
+    }
+}
+
+@media (max-width: 576px) {
+    html {
+        font-size: 14px;
+    }
+    
+    .container {
+        padding: 0 var(--spacing-md);
+    }
+    
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .card {
+        padding: var(--spacing-md);
+    }
+}
+
+/* Estilo para visualización de errores y contenido en desarrollo */
+.error-container {
+    text-align: center;
+    padding: var(--spacing-xxl) var(--spacing-lg);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.error-container h1 {
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-lg);
+}
+
+.error-container p {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-xl);
+}
 /*
  * WebCraft Academy - Estilos Principales
  * 

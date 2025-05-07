@@ -1,172 +1,135 @@
 <?php
-// Verificar que el script se ejecuta dentro del contexto adecuado
+/**
+ * Página de inicio de sesión para WebCraft Academy
+ */
+
+// Prevenir acceso directo a este archivo
 if (!defined('WEBCRAFT')) {
     die('Acceso directo no permitido');
 }
 
-// Verificar si ya está autenticado, redirigir a dashboard
-if (isset($_SESSION['user_id'])) {
+// Incluir procesamiento de login
+require_once 'includes/auth/login.php';
+
+// Redireccionar si ya está autenticado
+if (isAuthenticated()) {
     header('Location: index.php?page=dashboard');
     exit;
 }
-
-// Procesar formulario de login si es enviado
-$error = '';
-$username = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
-    // Obtener y sanitizar datos
-    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-    $password = $_POST['password'] ?? '';
-    
-    // Validar datos
-    if (empty($username) || empty($password)) {
-        $error = 'Por favor, ingresa tu usuario y contraseña.';
-    } else {
-        try {
-            // Buscar usuario
-            $stmt = getDbConnection()->prepare("SELECT u.user_id, u.username, u.password, u.is_active, p.level 
-                                              FROM users u 
-                                              LEFT JOIN user_profiles p ON u.user_id = p.user_id 
-                                              WHERE u.username = ? OR u.email = ?");
-            $stmt->execute([$username, $username]);
-            $user = $stmt->fetch();
-            
-            if ($user && password_verify($password, $user['password'])) {
-                // Verificar estado de la cuenta
-                if (!$user['is_active']) {
-                    $error = 'Tu cuenta está inactiva. Por favor, contacta a soporte.';
-                } else {
-                    // Iniciar sesión
-                    $_SESSION['user_id'] = $user['user_id'];
-                    $_SESSION['username'] = $user['username'];
-                    $_SESSION['developer_level'] = $user['level'];
-                    
-                    // Actualizar último login
-                    $updateStmt = getDbConnection()->prepare("UPDATE users SET last_login = NOW() WHERE user_id = ?");
-                    $updateStmt->execute([$user['user_id']]);
-                    
-                    // Redirigir según corresponda
-                    $redirect = filter_input(INPUT_GET, 'redirect', FILTER_SANITIZE_STRING);
-                    $allowedRedirects = ['dashboard', 'profile', 'modules', 'lessons', 'challenges', 'editor'];
-                    
-                    if (!empty($redirect) && in_array($redirect, $allowedRedirects)) {
-                        header('Location: index.php?page=' . $redirect);
-                    } else {
-                        header('Location: index.php?page=dashboard');
-                    }
-                    exit;
-                }
-            } else {
-                $error = 'Usuario o contraseña incorrectos. Por favor, intenta nuevamente.';
-            }
-        } catch (PDOException $e) {
-            $error = 'Error al procesar la solicitud. Por favor, intenta nuevamente más tarde.';
-            if (DEV_MODE) {
-                // En desarrollo mostramos el error para depuración
-                $error .= ' [' . $e->getMessage() . ']';
-            }
-        }
-    }
-}
 ?>
 
-<div class="login-container">
-    <div class="auth-form-wrapper">
-        <div class="auth-form">
-            <div class="auth-header">
-                <h1>Iniciar Sesión</h1>
-                <p>Accede a tu cuenta de WebCraft Academy</p>
-            </div>
-            
-            <?php if (!empty($error)): ?>
-                <div class="alert alert-danger">
-                    <i class="fas fa-exclamation-circle"></i> <?php echo htmlspecialchars($error); ?>
-                </div>
-            <?php endif; ?>
-            
-            <form method="POST" action="index.php?page=login<?php echo isset($_GET['redirect']) ? '&redirect=' . htmlspecialchars($_GET['redirect']) : ''; ?>" class="login-form">
-                <div class="form-group">
-                    <label for="username">Usuario o Correo Electrónico</label>
-                    <div class="input-icon-wrapper">
-                        <i class="fas fa-user"></i>
-                        <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($username); ?>" required autocomplete="username">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Contraseña</label>
-                    <div class="input-icon-wrapper">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="password" name="password" required autocomplete="current-password">
-                        <button type="button" class="password-toggle" aria-label="Ver contraseña">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="form-options">
-                    <div class="remember-me">
-                        <input type="checkbox" id="remember" name="remember" value="1">
-                        <label for="remember">Recordarme</label>
-                    </div>
-                    <a href="index.php?page=reset-password" class="forgot-password">¿Olvidaste tu contraseña?</a>
-                </div>
-                
-                <div class="form-submit">
-                    <button type="submit" name="login" class="btn btn-primary btn-block">Iniciar Sesión</button>
-                </div>
-            </form>
-            
-            <div class="auth-separator">
-                <span>O</span>
-            </div>
-            
-            <div class="social-auth">
-                <button type="button" class="btn btn-social btn-github">
-                    <i class="fab fa-github"></i> Continuar con GitHub
-                </button>
-                <button type="button" class="btn btn-social btn-google">
-                    <i class="fab fa-google"></i> Continuar con Google
-                </button>
-            </div>
-            
-            <div class="auth-footer">
-                ¿No tienes una cuenta? <a href="index.php?page=register<?php echo isset($_GET['redirect']) ? '&redirect=' . htmlspecialchars($_GET['redirect']) : ''; ?>">Regístrate</a>
-            </div>
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>Iniciar Sesión</h1>
+            <p>Accede a tu cuenta para continuar aprendiendo</p>
         </div>
         
-        <div class="auth-info">
-            <div class="auth-info-content">
-                <h2>¡Bienvenido a WebCraft Academy!</h2>
-                <p>Una plataforma educativa interactiva donde aprenderás desarrollo web a través de proyectos reales y desafíos divertidos.</p>
-                
-                <div class="auth-features">
-                    <div class="auth-feature">
-                        <i class="fas fa-graduation-cap"></i>
-                        <div>
-                            <h3>Aprende Haciendo</h3>
-                            <p>80% práctica, 20% teoría. Concepto probado para aprender más rápido.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="auth-feature">
-                        <i class="fas fa-code"></i>
-                        <div>
-                            <h3>Proyectos Reales</h3>
-                            <p>Construye sitios y aplicaciones que puedes agregar a tu portafolio.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="auth-feature">
-                        <i class="fas fa-users"></i>
-                        <div>
-                            <h3>Comunidad Activa</h3>
-                            <p>Comparte, colabora y aprende con otros estudiantes y mentores.</p>
-                        </div>
-                    </div>
+        <?php if (!empty($errors)): ?>
+            <div class="alert alert-danger">
+                <?php foreach ($errors as $error): ?>
+                    <p><?php echo htmlspecialchars($error); ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        
+        <form class="auth-form" method="POST" action="">
+            <!-- Campo oculto para protección CSRF -->
+            <input type="hidden" name="csrf_token" value="<?php echo generateCsrfToken(); ?>">
+            
+            <div class="form-group">
+                <label for="username_email">Usuario o Correo electrónico</label>
+                <input 
+                    type="text" 
+                    id="username_email" 
+                    name="username_email" 
+                    value="<?php echo htmlspecialchars($usernameOrEmail); ?>" 
+                    required 
+                    autofocus
+                    class="form-control"
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <div class="password-input-group">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        required 
+                        class="form-control"
+                    >
+                    <button type="button" class="toggle-password" aria-label="Mostrar contraseña">
+                        <i class="fas fa-eye"></i>
+                    </button>
                 </div>
+            </div>
+            
+            <div class="form-check">
+                <input 
+                    type="checkbox" 
+                    id="remember" 
+                    name="remember" 
+                    class="form-check-input"
+                    <?php echo $remember ? 'checked' : ''; ?>
+                >
+                <label class="form-check-label" for="remember">Recordarme</label>
+            </div>
+            
+            <div class="auth-actions">
+                <button type="submit" name="login_submit" class="btn btn-primary btn-block">
+                    Iniciar Sesión
+                </button>
+            </div>
+        </form>
+        
+        <div class="auth-links">
+            <a href="index.php?page=register" class="btn-link">¿No tienes cuenta? Regístrate</a>
+            <a href="index.php?page=forgot-password" class="btn-link">¿Olvidaste tu contraseña?</a>
+        </div>
+        
+        <div class="auth-separator">
+            <span>o</span>
+        </div>
+        
+        <div class="social-login">
+            <p>Iniciar sesión con:</p>
+            <div class="social-buttons">
+                <button class="btn btn-social btn-google" disabled title="Próximamente">
+                    <i class="fab fa-google"></i> Google
+                </button>
+                <button class="btn btn-social btn-github" disabled title="Próximamente">
+                    <i class="fab fa-github"></i> GitHub
+                </button>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Script para mostrar/ocultar contraseña
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleButtons = document.querySelectorAll('.toggle-password');
+        
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                const icon = this.querySelector('i');
+                
+                // Cambiar tipo de input
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                    this.setAttribute('aria-label', 'Ocultar contraseña');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                    this.setAttribute('aria-label', 'Mostrar contraseña');
+                }
+            });
+        });
+    });
+</script>

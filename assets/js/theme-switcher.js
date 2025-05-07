@@ -1,106 +1,67 @@
 /**
- * WebCraft Academy - Theme Switcher
+ * WebCraft Academy - Controlador de Tema
  * 
- * Este script maneja el cambio entre temas claro y oscuro
- * y la detección automática de preferencias del usuario.
+ * Este script maneja la funcionalidad de cambio entre tema claro y oscuro,
+ * respetando las preferencias del usuario y del sistema.
  */
 
-// Función de inicialización que se ejecuta cuando el DOM está listo
-document.addEventListener('DOMContentLoaded', () => {
-    initThemeSwitch();
-});
-
-/**
- * Inicializa el sistema de cambio de tema
- */
-function initThemeSwitch() {
-    // Obtener el botón de cambio de tema
-    const themeToggle = document.getElementById('theme-toggle');
+document.addEventListener('DOMContentLoaded', function() {
+    // Obtener elementos del DOM
+    const themeToggle = document.querySelector('.theme-toggle');
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
     
-    if (!themeToggle) {
-        console.warn('Botón de cambio de tema no encontrado');
-        return;
+    // Función para configurar tema
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        
+        // Actualizar ícono del botón según el tema
+        if (themeToggle) {
+            const icon = themeToggle.querySelector('i');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.className = 'fas fa-sun';
+                    themeToggle.setAttribute('title', 'Cambiar a tema claro');
+                    themeToggle.setAttribute('aria-label', 'Cambiar a tema claro');
+                } else {
+                    icon.className = 'fas fa-moon';
+                    themeToggle.setAttribute('title', 'Cambiar a tema oscuro');
+                    themeToggle.setAttribute('aria-label', 'Cambiar a tema oscuro');
+                }
+            }
+        }
     }
     
-    // Agregar evento de clic al botón
-    themeToggle.addEventListener('click', toggleTheme);
-    
-    // Verificar preferencia guardada o usar preferencia del sistema
-    checkThemePreference();
-    
-    // Escuchar cambios en la preferencia del sistema
-    listenForSystemPreferenceChanges();
-}
-
-/**
- * Cambia entre los temas claro y oscuro
- */
-function toggleTheme() {
-    // Obtener el tema actual
-    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-    
-    // Cambiar al tema opuesto
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    
-    // Aplicar el nuevo tema
-    setTheme(newTheme);
-    
-    // Guardar la preferencia en localStorage
-    localStorage.setItem('theme', newTheme);
-    
-    // Registro para depuración
-    console.log(`Tema cambiado a: ${newTheme}`);
-}
-
-/**
- * Verifica la preferencia de tema guardada o la configuración del sistema
- */
-function checkThemePreference() {
-    // Verificar si hay una preferencia guardada
+    // Obtener tema guardado o usar preferencia del sistema
     const savedTheme = localStorage.getItem('theme');
     
-    // Si hay una preferencia guardada, usarla
     if (savedTheme) {
+        // Usar tema guardado si existe
         setTheme(savedTheme);
-        return;
+    } else if (prefersDarkScheme.matches) {
+        // Si no hay tema guardado pero el sistema prefiere oscuro
+        setTheme('dark');
+    } else {
+        // Por defecto usar tema claro
+        setTheme('light');
     }
     
-    // Si no hay preferencia guardada, verificar la configuración del sistema
-    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const systemTheme = prefersDarkMode ? 'dark' : 'light';
+    // Escuchar eventos de clic en el botón de cambio de tema
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            setTheme(newTheme);
+        });
+    }
     
-    // Aplicar el tema según la preferencia del sistema
-    setTheme(systemTheme);
-}
-
-/**
- * Escucha cambios en la preferencia de tema del sistema
- */
-function listenForSystemPreferenceChanges() {
-    // Media query para detectar preferencia de tema oscuro
-    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    // Agregar event listener para cambios
-    darkModeMediaQuery.addEventListener('change', (e) => {
-        // Solo actualizar si el usuario no ha establecido una preferencia manualmente
+    // Escuchar cambios en las preferencias del sistema
+    prefersDarkScheme.addEventListener('change', function(e) {
+        // Solo cambiar automáticamente si el usuario no ha establecido una preferencia
         if (!localStorage.getItem('theme')) {
-            const systemTheme = e.matches ? 'dark' : 'light';
-            setTheme(systemTheme);
-            console.log(`Tema ajustado automáticamente a: ${systemTheme} (preferencia del sistema)`);
+            const newTheme = e.matches ? 'dark' : 'light';
+            setTheme(newTheme);
         }
     });
-}
-
-/**
- * Aplica el tema especificado
- * @param {string} theme - El tema a aplicar ('light' o 'dark')
- */
-function setTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    
-    // Si el tema es oscuro, establecer meta theme-color para navegadores móviles
-    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-    if (metaThemeColor) {
-        metaThemeColor.setAttribute('content', theme === 'dark' ? '#121212' : '#ffffff');
-    }
-}
+});

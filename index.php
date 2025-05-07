@@ -12,6 +12,9 @@ define('WEBCRAFT', true);
 // Incluir archivo de configuración
 require_once 'config.php';
 
+// Incluir funciones de autenticación
+require_once 'includes/auth/auth.php';
+
 // Iniciar o continuar sesión
 session_name(SESSION_NAME);
 session_start([

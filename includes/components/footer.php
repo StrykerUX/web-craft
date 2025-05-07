@@ -1,76 +1,85 @@
 <?php
-// Verificar que el script se ejecuta dentro del contexto adecuado
+/**
+ * Componente de pie de página para WebCraft Academy
+ * 
+ * Este componente contiene los enlaces del footer, información de contacto,
+ * redes sociales y derechos de autor.
+ */
+
+// Prevenir acceso directo a este archivo
 if (!defined('WEBCRAFT')) {
     die('Acceso directo no permitido');
 }
+
+// Año actual para copyright
+$currentYear = date('Y');
 ?>
+
 <div class="container">
-    <div class="footer-content">
-        <div class="footer-logo">
-            <img src="assets/images/webcraft-logo-white.svg" alt="WebCraft Academy" class="footer-logo-img">
-            <div class="footer-tagline">Aprende desarrollo web de manera interactiva y divertida</div>
+    <div class="footer-grid">
+        <!-- Sección Acerca de -->
+        <div class="footer-about">
+            <h3>WebCraft Academy</h3>
+            <p>Plataforma educativa interactiva para aprender desarrollo web mediante un enfoque práctico y gamificado.</p>
+            <div class="footer-social">
+                <a href="#" class="social-icon" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
         </div>
-        
-        <div class="footer-nav">
-            <div class="footer-column">
-                <h4>Plataforma</h4>
-                <ul>
-                    <li><a href="index.php">Inicio</a></li>
-                    <li><a href="index.php?page=modules">Módulos</a></li>
-                    <li><a href="index.php?page=challenges">Desafíos</a></li>
-                    <li><a href="index.php?page=forum">Foro</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h4>Recursos</h4>
-                <ul>
-                    <li><a href="index.php?page=faq">FAQ</a></li>
-                    <li><a href="index.php?page=docs">Documentación</a></li>
-                    <li><a href="index.php?page=blog">Blog</a></li>
-                    <li><a href="index.php?page=support">Soporte</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h4>Legal</h4>
-                <ul>
-                    <li><a href="index.php?page=terms">Términos y Condiciones</a></li>
-                    <li><a href="index.php?page=privacy">Política de Privacidad</a></li>
-                    <li><a href="index.php?page=cookies">Política de Cookies</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h4>Comunidad</h4>
-                <ul>
-                    <li><a href="https://github.com/StrykerUX/web-craft" target="_blank" rel="noopener noreferrer">GitHub <i class="fas fa-external-link-alt"></i></a></li>
-                    <li><a href="https://twitter.com/webcraftacademy" target="_blank" rel="noopener noreferrer">Twitter <i class="fas fa-external-link-alt"></i></a></li>
-                    <li><a href="https://discord.gg/webcraftacademy" target="_blank" rel="noopener noreferrer">Discord <i class="fas fa-external-link-alt"></i></a></li>
-                </ul>
-            </div>
+
+        <!-- Enlaces de navegación -->
+        <div class="footer-links">
+            <h4>Aprendizaje</h4>
+            <ul>
+                <li><a href="index.php?page=modules">Módulos</a></li>
+                <li><a href="index.php?page=challenges">Desafíos</a></li>
+                <li><a href="index.php?page=projects">Proyectos</a></li>
+                <li><a href="index.php?page=forum">Foro</a></li>
+                <li><a href="index.php?page=resources">Recursos</a></li>
+            </ul>
+        </div>
+
+        <!-- Enlaces de recursos -->
+        <div class="footer-links">
+            <h4>Recursos</h4>
+            <ul>
+                <li><a href="index.php?page=blog">Blog</a></li>
+                <li><a href="index.php?page=documentation">Documentación</a></li>
+                <li><a href="index.php?page=tutorials">Tutoriales</a></li>
+                <li><a href="index.php?page=faq">Preguntas frecuentes</a></li>
+                <li><a href="index.php?page=roadmap">Roadmap</a></li>
+            </ul>
+        </div>
+
+        <!-- Enlaces de Empresa -->
+        <div class="footer-links">
+            <h4>Empresa</h4>
+            <ul>
+                <li><a href="index.php?page=about">Acerca de</a></li>
+                <li><a href="index.php?page=contact">Contacto</a></li>
+                <li><a href="index.php?page=terms">Términos de servicio</a></li>
+                <li><a href="index.php?page=privacy">Política de privacidad</a></li>
+                <li><a href="index.php?page=careers">Empleo</a></li>
+            </ul>
         </div>
     </div>
-    
+
+    <!-- Parte inferior del footer -->
     <div class="footer-bottom">
-        <div class="copyright">
-            &copy; <?php echo date('Y'); ?> WebCraft Academy. Todos los derechos reservados.
-        </div>
-        
-        <div class="version">
-            v<?php echo defined('APP_VERSION') ? APP_VERSION : '1.0.0'; ?>
-        </div>
-        
-        <div class="footer-social">
-            <a href="https://github.com/StrykerUX/web-craft" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                <i class="fab fa-github"></i>
-            </a>
-            <a href="https://twitter.com/webcraftacademy" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a href="https://discord.gg/webcraftacademy" target="_blank" rel="noopener noreferrer" aria-label="Discord">
-                <i class="fab fa-discord"></i>
-            </a>
-        </div>
+        <p>&copy; <?php echo $currentYear; ?> WebCraft Academy. Todos los derechos reservados.</p>
+        <p>Desarrollado con <i class="fas fa-heart"></i> por StrykerUX</p>
     </div>
 </div>
