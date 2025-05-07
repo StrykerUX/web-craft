@@ -127,13 +127,14 @@ if (!defined('WEBCRAFT')) {
                 $modules = $stmt->fetchAll();
             } catch (PDOException $e) {
                 $modules = [];
-                if (DEV_MODE) {
+                if (defined('DEV_MODE') && DEV_MODE) {
                     echo "<!-- Error: " . $e->getMessage() . " -->";
                 }
             }
             
             // Mostrar módulos
-            foreach ($modules as $module):
+            if (isset($modules) && !empty($modules)):
+                foreach ($modules as $module):
             ?>
             <div class="module-card">
                 <div class="module-icon">
@@ -145,13 +146,14 @@ if (!defined('WEBCRAFT')) {
                     <a href="index.php?page=modules&module_id=<?php echo $module['module_id']; ?>" class="btn btn-outline btn-sm">Ver módulo</a>
                 </div>
             </div>
-            <?php endforeach; ?>
-            
-            <?php if (empty($modules)): ?>
-            <!-- Mostrar módulos de muestra si no hay datos en la BD -->
+            <?php 
+                endforeach; 
+            else: 
+                // Mostrar módulos de muestra si no hay datos en la BD 
+            ?>
             <div class="module-card">
                 <div class="module-icon">
-                    <i class="fa-html5"></i>
+                    <i class="fab fa-html5"></i>
                 </div>
                 <div class="module-content">
                     <h3>Fundamentos HTML</h3>
@@ -162,7 +164,7 @@ if (!defined('WEBCRAFT')) {
             
             <div class="module-card">
                 <div class="module-icon">
-                    <i class="fa-css3-alt"></i>
+                    <i class="fab fa-css3-alt"></i>
                 </div>
                 <div class="module-content">
                     <h3>Estilización con CSS</h3>
@@ -173,7 +175,7 @@ if (!defined('WEBCRAFT')) {
             
             <div class="module-card">
                 <div class="module-icon">
-                    <i class="fa-js"></i>
+                    <i class="fab fa-js"></i>
                 </div>
                 <div class="module-content">
                     <h3>Interactividad con JavaScript</h3>
@@ -184,7 +186,7 @@ if (!defined('WEBCRAFT')) {
             
             <div class="module-card">
                 <div class="module-icon">
-                    <i class="fa-code"></i>
+                    <i class="fas fa-code"></i>
                 </div>
                 <div class="module-content">
                     <h3>Mejoras con jQuery</h3>

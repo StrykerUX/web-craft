@@ -58,7 +58,7 @@ if (!defined('WEBCRAFT')) {
         </div>
         
         <div class="version">
-            v<?php echo APP_VERSION; ?>
+            v<?php echo defined('APP_VERSION') ? APP_VERSION : '1.0.0'; ?>
         </div>
         
         <div class="footer-social">

@@ -3,6 +3,12 @@
 if (!defined('WEBCRAFT')) {
     die('Acceso directo no permitido');
 }
+
+// Asegurarse de que la variable $page esté definida
+if (!isset($page)) {
+    // Intentar obtener la página desde la URL
+    $page = isset($_GET['page']) ? $_GET['page'] : 'home';
+}
 ?>
 <nav class="main-nav">
     <div class="container">
@@ -17,22 +23,22 @@ if (!defined('WEBCRAFT')) {
             
             <!-- Menú Principal -->
             <ul class="nav-menu">
-                <li class="nav-item <?php echo $page === 'home' ? 'active' : ''; ?>">
+                <li class="nav-item <?php echo ($page === 'home') ? 'active' : ''; ?>">
                     <a href="index.php" class="nav-link">Inicio</a>
                 </li>
                 
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <!-- Menú para usuarios autenticados -->
-                    <li class="nav-item <?php echo $page === 'dashboard' ? 'active' : ''; ?>">
+                    <li class="nav-item <?php echo ($page === 'dashboard') ? 'active' : ''; ?>">
                         <a href="index.php?page=dashboard" class="nav-link">Dashboard</a>
                     </li>
-                    <li class="nav-item <?php echo $page === 'modules' ? 'active' : ''; ?>">
+                    <li class="nav-item <?php echo ($page === 'modules') ? 'active' : ''; ?>">
                         <a href="index.php?page=modules" class="nav-link">Módulos</a>
                     </li>
-                    <li class="nav-item <?php echo $page === 'challenges' ? 'active' : ''; ?>">
+                    <li class="nav-item <?php echo ($page === 'challenges') ? 'active' : ''; ?>">
                         <a href="index.php?page=challenges" class="nav-link">Desafíos</a>
                     </li>
-                    <li class="nav-item <?php echo $page === 'forum' ? 'active' : ''; ?>">
+                    <li class="nav-item <?php echo ($page === 'forum') ? 'active' : ''; ?>">
                         <a href="index.php?page=forum" class="nav-link">Foro</a>
                     </li>
                 <?php else: ?>
@@ -45,7 +51,7 @@ if (!defined('WEBCRAFT')) {
             
             <!-- Menú de Usuario / Autenticación -->
             <div class="user-menu">
-                <?php if (isset($user) && $user): ?>
+                <?php if (isset($_SESSION['user_id']) && isset($user) && $user): ?>
                     <!-- Usuario autenticado -->
                     <div class="user-profile dropdown">
                         <button class="dropdown-toggle">
@@ -82,8 +88,8 @@ if (!defined('WEBCRAFT')) {
                 <?php else: ?>
                     <!-- Botones de Login/Registro -->
                     <div class="auth-buttons">
-                        <a href="index.php?page=login" class="btn btn-outline <?php echo $page === 'login' ? 'active' : ''; ?>">Iniciar Sesión</a>
-                        <a href="index.php?page=register" class="btn btn-primary <?php echo $page === 'register' ? 'active' : ''; ?>">Registrarse</a>
+                        <a href="index.php?page=login" class="btn btn-outline <?php echo ($page === 'login') ? 'active' : ''; ?>">Iniciar Sesión</a>
+                        <a href="index.php?page=register" class="btn btn-primary <?php echo ($page === 'register') ? 'active' : ''; ?>">Registrarse</a>
                     </div>
                 <?php endif; ?>
                 
@@ -105,7 +111,7 @@ if (!defined('WEBCRAFT')) {
 </nav>
 
 <!-- Barra de progreso para módulo actual (solo visible en páginas de lecciones) -->
-<?php if ($page === 'lessons' && isset($_GET['module_id'])): ?>
+<?php if (isset($page) && $page === 'lessons' && isset($_GET['module_id'])): ?>
     <?php
     // Obtener información del módulo actual
     try {
@@ -138,12 +144,12 @@ if (!defined('WEBCRAFT')) {
     } catch (PDOException $e) {
         $moduleInfo = null;
         $moduleProgress = 0;
-        if (DEV_MODE) {
+        if (defined('DEV_MODE') && DEV_MODE) {
             echo "<!-- Error: " . $e->getMessage() . " -->";
         }
     }
     
-    if ($moduleInfo):
+    if (isset($moduleInfo) && $moduleInfo):
     ?>
     <div class="module-progress-bar">
         <div class="container">
