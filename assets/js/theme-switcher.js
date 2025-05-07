@@ -1,67 +1,76 @@
 /**
- * WebCraft Academy - Controlador de Tema
+ * WebCraft Academy - Theme Switcher
  * 
- * Este script maneja la funcionalidad de cambio entre tema claro y oscuro,
- * respetando las preferencias del usuario y del sistema.
+ * Este script maneja el cambio entre tema claro y oscuro
+ * y guarda la preferencia del usuario en localStorage.
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Obtener elementos del DOM
-    const themeToggle = document.querySelector('.theme-toggle');
-    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    // Elementos DOM
+    const themeToggle = document.getElementById('theme-toggle');
+    const htmlElement = document.documentElement;
     
-    // Función para configurar tema
-    function setTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-        
-        // Actualizar ícono del botón según el tema
-        if (themeToggle) {
-            const icon = themeToggle.querySelector('i');
-            if (icon) {
-                if (theme === 'dark') {
-                    icon.className = 'fas fa-sun';
-                    themeToggle.setAttribute('title', 'Cambiar a tema claro');
-                    themeToggle.setAttribute('aria-label', 'Cambiar a tema claro');
-                } else {
-                    icon.className = 'fas fa-moon';
-                    themeToggle.setAttribute('title', 'Cambiar a tema oscuro');
-                    themeToggle.setAttribute('aria-label', 'Cambiar a tema oscuro');
-                }
-            }
-        }
-    }
+    // Detectar preferencia del sistema
+    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    // Obtener tema guardado o usar preferencia del sistema
-    const savedTheme = localStorage.getItem('theme');
+    // Obtener tema guardado o usar el del sistema
+    let currentTheme = localStorage.getItem('theme') || (prefersDarkMode ? 'dark' : 'light');
     
-    if (savedTheme) {
-        // Usar tema guardado si existe
-        setTheme(savedTheme);
-    } else if (prefersDarkScheme.matches) {
-        // Si no hay tema guardado pero el sistema prefiere oscuro
-        setTheme('dark');
-    } else {
-        // Por defecto usar tema claro
-        setTheme('light');
-    }
+    // Aplicar tema inicial
+    applyTheme(currentTheme);
     
-    // Escuchar eventos de clic en el botón de cambio de tema
+    // Evento para cambiar tema
     if (themeToggle) {
         themeToggle.addEventListener('click', function() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            // Cambiar entre temas
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
             
-            setTheme(newTheme);
+            // Guardar preferencia
+            localStorage.setItem('theme', currentTheme);
+            
+            // Aplicar tema
+            applyTheme(currentTheme);
         });
     }
     
-    // Escuchar cambios en las preferencias del sistema
-    prefersDarkScheme.addEventListener('change', function(e) {
-        // Solo cambiar automáticamente si el usuario no ha establecido una preferencia
+    // Función para aplicar tema
+    function applyTheme(theme) {
+        // Establecer atributo en HTML
+        htmlElement.setAttribute('data-theme', theme);
+        
+        // Actualizar ícono si existe el botón
+        if (themeToggle) {
+            const icon = themeToggle.querySelector('i') || themeToggle;
+            
+            if (theme === 'dark') {
+                // Cambiar al ícono de sol para tema oscuro
+                if (icon.classList) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+                themeToggle.setAttribute('aria-label', 'Cambiar a tema claro');
+            } else {
+                // Cambiar al ícono de luna para tema claro
+                if (icon.classList) {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+                themeToggle.setAttribute('aria-label', 'Cambiar a tema oscuro');
+            }
+        }
+        
+        // Disparar evento personalizado para notificar a otros scripts
+        const themeEvent = new CustomEvent('themeChanged', { detail: { theme } });
+        document.dispatchEvent(themeEvent);
+    }
+    
+    // Escuchar cambios en la preferencia del sistema
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        // Solo cambiar automáticamente si el usuario no ha establecido preferencia
         if (!localStorage.getItem('theme')) {
             const newTheme = e.matches ? 'dark' : 'light';
-            setTheme(newTheme);
+            applyTheme(newTheme);
+            currentTheme = newTheme;
         }
     });
 });

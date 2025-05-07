@@ -99,15 +99,19 @@ if ($page === 'home') {
     <link rel="icon" href="assets/images/favicon.ico">
     <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
     
-    <!-- Hojas de estilo -->
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/themes.css">
+    <!-- Bootstrap 5 CSS completo -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Font Awesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Bootstrap para sistema de grid -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-grid.min.css">
+    <!-- Google Fonts - Inter y Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Hojas de estilo personalizadas -->
+    <link rel="stylesheet" href="assets/css/main.css">
     
     <!-- Página específica CSS si existe -->
     <?php if (file_exists('assets/css/pages/' . $page . '.css')): ?>
@@ -153,13 +157,16 @@ if ($page === 'home') {
         <?php loadPageComponent('footer'); ?>
     </footer>
     
-    <!-- Scripts comunes -->
-    <script src="assets/js/theme-switcher.js"></script>
-    <script src="assets/js/main.js"></script>
+    <!-- Bootstrap 5 JS Bundle con Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- jQuery y GSAP -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- Scripts personalizados -->
+    <script src="assets/js/theme-switcher.js"></script>
+    <script src="assets/js/main.js"></script>
     
     <!-- Página específica JS si existe -->
     <?php if (file_exists('assets/js/pages/' . $page . '.js')): ?>
