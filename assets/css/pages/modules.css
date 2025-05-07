@@ -326,3 +326,25 @@
         display: none;
     }
 }
+
+/* Variables de color */
+:root {
+    --primary-color: #3498db;
+    --text-color: #333333;
+    --text-color-muted: #666666;
+    --bg-color-secondary: #ffffff;
+    --bg-color-tertiary: #f5f5f5;
+    --border-color: #dddddd;
+}
+
+/* Tema oscuro */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary-color: #4da6ff;
+        --text-color: #f0f0f0;
+        --text-color-muted: #aaaaaa;
+        --bg-color-secondary: #2a2a2a;
+        --bg-color-tertiary: #3a3a3a;
+        --border-color: #444444;
+    }
+}
