@@ -15,7 +15,7 @@ $error = '';
 $success = '';
 $username = '';
 $email = '';
-$display_name = '';
+$full_name = '';
 
 // Procesar formulario de registro si es enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     $email = htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8');
     $password = $_POST['password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
+    $full_name = htmlspecialchars($_POST['full_name'] ?? '', ENT_QUOTES, 'UTF-8');
     
     // Validaciones básicas
     if (empty($username) || empty($email) || empty($password) || empty($confirm_password)) {
@@ -62,34 +63,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                 // Crear el hash de la contraseña
                 $password_hash = password_hash($password, PASSWORD_DEFAULT, ['cost' => HASH_COST]);
                 
-                // Preparar display_name si está vacío
-                if (empty($display_name)) {
-                    $display_name = $username;
+                // Preparar full_name si está vacío
+                if (empty($full_name)) {
+                    $full_name = $username;
                 }
                 
                 // Insertar nuevo usuario
                 $stmt = $pdo->prepare("
-                    INSERT INTO users (username, email, password, display_name, registration_date)
-                    VALUES (?, ?, ?, ?, NOW())
+                    INSERT INTO users (username, email, password, registration_date)
+                    VALUES (?, ?, ?, NOW())
                 ");
                 
-                if ($stmt->execute([$username, $email, $password_hash, $display_name])) {
+                if ($stmt->execute([$username, $email, $password_hash])) {
                     // Registro exitoso, obtener el ID del usuario
                     $user_id = $pdo->lastInsertId();
                     
-                    // Crear preferencias por defecto
+                    // Crear perfil de usuario
                     $stmt = $pdo->prepare("
-                        INSERT INTO user_preferences (user_id, theme_preference, difficulty_preference)
-                        VALUES (?, 'system', 'beginner')
+                        INSERT INTO user_profiles (user_id, full_name, level, xp_points, theme_preference)
+                        VALUES (?, ?, 'Principiante', 0, 'system')
                     ");
-                    $stmt->execute([$user_id]);
-                    
-                    // Registrar logro "Primer Paso"
-                    $stmt = $pdo->prepare("
-                        INSERT INTO user_achievements (user_id, achievement_id)
-                        SELECT ?, achievement_id FROM achievements WHERE achievement_name = 'Primer Paso'
-                    ");
-                    $stmt->execute([$user_id]);
+                    $stmt->execute([$user_id, $full_name]);
                     
                     // Iniciar sesión automáticamente
                     $_SESSION['user_id'] = $user_id;
@@ -160,10 +154,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                 </div>
                 
                 <div class="form-group">
-                    <label for="display_name">Nombre para Mostrar</label>
+                    <label for="full_name">Nombre Completo</label>
                     <div class="input-icon-wrapper">
                         <i class="fas fa-id-card"></i>
-                        <input type="text" id="display_name" name="display_name" value="<?php echo htmlspecialchars($display_name); ?>" autocomplete="name">
+                        <input type="text" id="full_name" name="full_name" value="<?php echo htmlspecialchars($full_name); ?>" autocomplete="name">
                     </div>
                     <small class="form-text">Opcional. Si lo dejas vacío, se usará tu nombre de usuario.</small>
                 </div>

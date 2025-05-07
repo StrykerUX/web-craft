@@ -25,19 +25,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     } else {
         try {
             // Buscar usuario
-            $stmt = getDbConnection()->prepare("SELECT user_id, username, password, account_status, developer_level FROM users WHERE username = ? OR email = ?");
+            $stmt = getDbConnection()->prepare("SELECT u.user_id, u.username, u.password, u.is_active, p.level 
+                                              FROM users u 
+                                              LEFT JOIN user_profiles p ON u.user_id = p.user_id 
+                                              WHERE u.username = ? OR u.email = ?");
             $stmt->execute([$username, $username]);
             $user = $stmt->fetch();
             
             if ($user && password_verify($password, $user['password'])) {
                 // Verificar estado de la cuenta
-                if ($user['account_status'] !== 'active') {
-                    $error = 'Tu cuenta está ' . ($user['account_status'] === 'suspended' ? 'suspendida' : 'inactiva') . '. Por favor, contacta a soporte.';
+                if (!$user['is_active']) {
+                    $error = 'Tu cuenta está inactiva. Por favor, contacta a soporte.';
                 } else {
                     // Iniciar sesión
                     $_SESSION['user_id'] = $user['user_id'];
                     $_SESSION['username'] = $user['username'];
-                    $_SESSION['developer_level'] = $user['developer_level'];
+                    $_SESSION['developer_level'] = $user['level'];
                     
                     // Actualizar último login
                     $updateStmt = getDbConnection()->prepare("UPDATE users SET last_login = NOW() WHERE user_id = ?");
