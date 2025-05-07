@@ -22,6 +22,14 @@ session_start([
     'use_strict_mode' => true
 ]);
 
+// Incluir funciones de autenticación
+require_once 'includes/auth/auth.php';
+
+// Verificar si hay una cookie "recordarme" y no hay sesión activa
+if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
+    checkRememberMeCookie();
+}
+
 // Función para cargar componentes de página
 function loadPageComponent($component) {
     $file = 'includes/components/' . $component . '.php';
@@ -38,7 +46,8 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 // Lista de páginas válidas
 $validPages = [
     'home', 'login', 'register', 'dashboard', 'profile', 
-    'modules', 'lessons', 'challenges', 'editor', 'forum'
+    'modules', 'lessons', 'challenges', 'editor', 'forum',
+    'reset-password', 'activate'
 ];
 
 // Verificar si la página solicitada es válida
@@ -49,7 +58,7 @@ if (!in_array($page, $validPages)) {
 // Verificar autenticación para páginas protegidas
 $protectedPages = ['dashboard', 'profile', 'modules', 'lessons', 'challenges', 'editor'];
 
-if (in_array($page, $protectedPages) && !isset($_SESSION['user_id'])) {
+if (in_array($page, $protectedPages) && !isUserLoggedIn()) {
     // Redirigir a login si intenta acceder a una página protegida sin autenticación
     header('Location: index.php?page=login&redirect=' . urlencode($page));
     exit;
@@ -61,17 +70,8 @@ $pageExists = file_exists($pageFile);
 
 // Obtener datos del usuario si está autenticado
 $user = null;
-if (isset($_SESSION['user_id'])) {
-    try {
-        $stmt = getDbConnection()->prepare("SELECT user_id, username, display_name, developer_level, experience_points, profile_image FROM users WHERE user_id = ?");
-        $stmt->execute([$_SESSION['user_id']]);
-        $user = $stmt->fetch();
-    } catch (PDOException $e) {
-        // Manejar error (en producción, registrar en log en lugar de mostrar)
-        if (DEV_MODE) {
-            echo "<!-- Error de base de datos: " . $e->getMessage() . " -->";
-        }
-    }
+if (isUserLoggedIn()) {
+    $user = getCurrentUser();
 }
 
 // Título de la página

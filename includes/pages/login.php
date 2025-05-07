@@ -4,71 +4,11 @@ if (!defined('WEBCRAFT')) {
     die('Acceso directo no permitido');
 }
 
-// Verificar si ya está autenticado, redirigir a dashboard
-if (isset($_SESSION['user_id'])) {
-    header('Location: index.php?page=dashboard');
-    exit;
-}
+// Incluir procesamiento de login
+require_once 'includes/auth/login.php';
 
-// Procesar formulario de login si es enviado
-$error = '';
-$username = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
-    // Obtener y sanitizar datos
-    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-    $password = $_POST['password'] ?? '';
-    
-    // Validar datos
-    if (empty($username) || empty($password)) {
-        $error = 'Por favor, ingresa tu usuario y contraseña.';
-    } else {
-        try {
-            // Buscar usuario
-            $stmt = getDbConnection()->prepare("SELECT u.user_id, u.username, u.password, u.is_active, p.level 
-                                              FROM users u 
-                                              LEFT JOIN user_profiles p ON u.user_id = p.user_id 
-                                              WHERE u.username = ? OR u.email = ?");
-            $stmt->execute([$username, $username]);
-            $user = $stmt->fetch();
-            
-            if ($user && password_verify($password, $user['password'])) {
-                // Verificar estado de la cuenta
-                if (!$user['is_active']) {
-                    $error = 'Tu cuenta está inactiva. Por favor, contacta a soporte.';
-                } else {
-                    // Iniciar sesión
-                    $_SESSION['user_id'] = $user['user_id'];
-                    $_SESSION['username'] = $user['username'];
-                    $_SESSION['developer_level'] = $user['level'];
-                    
-                    // Actualizar último login
-                    $updateStmt = getDbConnection()->prepare("UPDATE users SET last_login = NOW() WHERE user_id = ?");
-                    $updateStmt->execute([$user['user_id']]);
-                    
-                    // Redirigir según corresponda
-                    $redirect = filter_input(INPUT_GET, 'redirect', FILTER_SANITIZE_STRING);
-                    $allowedRedirects = ['dashboard', 'profile', 'modules', 'lessons', 'challenges', 'editor'];
-                    
-                    if (!empty($redirect) && in_array($redirect, $allowedRedirects)) {
-                        header('Location: index.php?page=' . $redirect);
-                    } else {
-                        header('Location: index.php?page=dashboard');
-                    }
-                    exit;
-                }
-            } else {
-                $error = 'Usuario o contraseña incorrectos. Por favor, intenta nuevamente.';
-            }
-        } catch (PDOException $e) {
-            $error = 'Error al procesar la solicitud. Por favor, intenta nuevamente más tarde.';
-            if (DEV_MODE) {
-                // En desarrollo mostramos el error para depuración
-                $error .= ' [' . $e->getMessage() . ']';
-            }
-        }
-    }
-}
+// Generar token CSRF
+$csrf_token = generateCSRFToken();
 ?>
 
 <div class="login-container">
@@ -86,6 +26,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             <?php endif; ?>
             
             <form method="POST" action="index.php?page=login<?php echo isset($_GET['redirect']) ? '&redirect=' . htmlspecialchars($_GET['redirect']) : ''; ?>" class="login-form">
+                <!-- Token CSRF oculto -->
+                <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                
                 <div class="form-group">
                     <label for="username">Usuario o Correo Electrónico</label>
                     <div class="input-icon-wrapper">

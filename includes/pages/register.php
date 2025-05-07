@@ -4,118 +4,11 @@ if (!defined('WEBCRAFT')) {
     die('Acceso directo no permitido');
 }
 
-// Iniciar buffer de salida para evitar errores de 'headers already sent'
-ob_start();
+// Incluir procesamiento de registro
+require_once 'includes/auth/register.php';
 
-// Verificar si ya está autenticado, redirigir a dashboard
-if (isset($_SESSION['user_id'])) {
-    header('Location: index.php?page=dashboard');
-    exit;
-}
-
-// Variables para el formulario
-$error = '';
-$success = '';
-$username = '';
-$email = '';
-$full_name = '';
-
-// Procesar formulario de registro si es enviado
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
-    // Obtener y sanitizar datos
-    $username = htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8');
-    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-    $email = htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8');
-    $password = $_POST['password'] ?? '';
-    $confirm_password = $_POST['confirm_password'] ?? '';
-    $full_name = htmlspecialchars($_POST['full_name'] ?? '', ENT_QUOTES, 'UTF-8');
-    
-    // Validaciones básicas
-    if (empty($username) || empty($email) || empty($password) || empty($confirm_password)) {
-        $error = 'Todos los campos son obligatorios.';
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = 'Por favor, ingresa un correo electrónico válido.';
-    } elseif (strlen($username) < 3 || strlen($username) > 50) {
-        $error = 'El nombre de usuario debe tener entre 3 y 50 caracteres.';
-    } elseif (!preg_match('/^[a-zA-Z0-9_]+$/', $username)) {
-        $error = 'El nombre de usuario solo puede contener letras, números y guiones bajos.';
-    } elseif (strlen($password) < 8) {
-        $error = 'La contraseña debe tener al menos 8 caracteres.';
-    } elseif ($password !== $confirm_password) {
-        $error = 'Las contraseñas no coinciden.';
-    } else {
-        try {
-            $pdo = getDbConnection();
-            
-            // Verificar si el usuario o email ya existen
-            $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE username = ? OR email = ?");
-            $stmt->execute([$username, $email]);
-            
-            if ($stmt->fetchColumn() > 0) {
-                // Verificar cuál existe para un mensaje más específico
-                $stmt = $pdo->prepare("SELECT username, email FROM users WHERE username = ? OR email = ?");
-                $stmt->execute([$username, $email]);
-                $existing = $stmt->fetch();
-                
-                if ($existing['username'] === $username) {
-                    $error = 'El nombre de usuario ya está en uso. Por favor, elige otro.';
-                } else {
-                    $error = 'El correo electrónico ya está registrado. ¿Olvidaste tu contraseña?';
-                }
-            } else {
-                // Crear el hash de la contraseña
-                $password_hash = password_hash($password, PASSWORD_DEFAULT, ['cost' => HASH_COST]);
-                
-                // Preparar full_name si está vacío
-                if (empty($full_name)) {
-                    $full_name = $username;
-                }
-                
-                // Insertar nuevo usuario
-                $stmt = $pdo->prepare("
-                    INSERT INTO users (username, email, password, registration_date)
-                    VALUES (?, ?, ?, NOW())
-                ");
-                
-                if ($stmt->execute([$username, $email, $password_hash])) {
-                    // Registro exitoso, obtener el ID del usuario
-                    $user_id = $pdo->lastInsertId();
-                    
-                    // Crear perfil de usuario
-                    $stmt = $pdo->prepare("
-                        INSERT INTO user_profiles (user_id, full_name, level, xp_points, theme_preference)
-                        VALUES (?, ?, 'Principiante', 0, 'system')
-                    ");
-                    $stmt->execute([$user_id, $full_name]);
-                    
-                    // Iniciar sesión automáticamente
-                    $_SESSION['user_id'] = $user_id;
-                    $_SESSION['username'] = $username;
-                    $_SESSION['developer_level'] = 'Principiante';
-                    
-                    // Redirigir a onboarding o dashboard según corresponda
-                    $redirect = filter_input(INPUT_GET, 'redirect', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                    $allowedRedirects = ['dashboard', 'profile', 'modules', 'lessons', 'challenges', 'editor'];
-                    
-                    if (!empty($redirect) && in_array($redirect, $allowedRedirects)) {
-                        header('Location: index.php?page=' . $redirect);
-                    } else {
-                        header('Location: index.php?page=dashboard');
-                    }
-                    exit;
-                } else {
-                    $error = 'Error al crear la cuenta. Por favor, intenta nuevamente.';
-                }
-            }
-        } catch (PDOException $e) {
-            $error = 'Error al procesar la solicitud. Por favor, intenta nuevamente más tarde.';
-            if (DEV_MODE) {
-                // En desarrollo mostramos el error para depuración
-                $error .= ' [' . $e->getMessage() . ']';
-            }
-        }
-    }
-}
+// Generar token CSRF
+$csrf_token = generateCSRFToken();
 ?>
 
 <div class="register-container">
@@ -139,6 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
             <?php endif; ?>
             
             <form method="POST" action="index.php?page=register<?php echo isset($_GET['redirect']) ? '&redirect=' . htmlspecialchars($_GET['redirect']) : ''; ?>" class="register-form">
+                <!-- Token CSRF oculto -->
+                <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                
                 <div class="form-group">
                     <label for="username">Nombre de Usuario <span class="required">*</span></label>
                     <div class="input-icon-wrapper">
@@ -266,8 +162,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
         </div>
     </div>
 </div>
-
-<?php
-// Flush the output buffer to send content to the browser
-ob_end_flush();
-?>
