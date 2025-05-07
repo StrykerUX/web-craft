@@ -20,9 +20,9 @@ $display_name = '';
 // Procesar formulario de registro si es enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     // Obtener y sanitizar datos
-    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+    $username = htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8');
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-    $display_name = filter_input(INPUT_POST, 'display_name', FILTER_SANITIZE_STRING);
+    $email = htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8');
     $password = $_POST['password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
     

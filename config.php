@@ -12,14 +12,14 @@ if (!defined('WEBCRAFT')) {
 }
 
 // Configuración de la base de datos
-define('DB_HOST', 'localhost');     // Host de la base de datos
+define('DB_HOST', '127.0.0.1');     // Host de la base de datos
 define('DB_NAME', 'u171418069_webcraft');  // Nombre de la base de datos
 define('DB_USER', 'u171418069_imstryker');  // Usuario de la base de datos
 define('DB_PASS', '9l/wwLcfcY');   // Contraseña de la base de datos
 define('DB_CHARSET', 'utf8mb4');    // Codificación de caracteres
 
 // URLs y Rutas del sistema
-define('BASE_URL', 'https://yourwebsite.com/webcraft/'); // Cambiar por la URL de producción
+define('BASE_URL', 'https://webcraft.imstryker.com/'); // Cambiar por la URL de producción
 define('BASE_PATH', __DIR__);       // Ruta base del sistema
 define('ASSETS_URL', BASE_URL . 'assets/');
 define('ASSETS_PATH', BASE_PATH . '/assets/');
@@ -28,7 +28,7 @@ define('ASSETS_PATH', BASE_PATH . '/assets/');
 define('SESSION_NAME', 'webcraft_session');
 define('SESSION_LIFETIME', 7200);   // 2 horas en segundos
 define('SESSION_PATH', '/');
-define('SESSION_SECURE', false);    // Cambiar a true en producción con HTTPS
+define('SESSION_SECURE', true);    // Cambiar a true en producción con HTTPS
 define('SESSION_HTTPONLY', true);
 
 // Opciones de seguridad
