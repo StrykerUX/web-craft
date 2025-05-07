@@ -1,120 +1,76 @@
 <?php
-/**
- * Componente de footer para WebCraft Academy
- * 
- * Este componente contiene el pie de página con enlaces y créditos.
- * Actualizado para funcionar con Bootstrap 5.
- */
-
-// Prevenir acceso directo a este archivo
+// Verificar que el script se ejecuta dentro del contexto adecuado
 if (!defined('WEBCRAFT')) {
     die('Acceso directo no permitido');
 }
-
-// Obtener el año actual para el copyright
-$currentYear = date('Y');
 ?>
-
 <div class="container">
-    <div class="row footer-content">
-        <!-- Columna de información principal -->
-        <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-            <div class="footer-about">
-                <h3>WebCraft Academy</h3>
-                <p>Plataforma educativa interactiva para aprender desarrollo web mediante un enfoque práctico y gamificado.</p>
-                
-                <!-- Redes sociales -->
-                <div class="footer-social">
-                    <a href="#" aria-label="Facebook">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" aria-label="Twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" aria-label="Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="#" aria-label="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="#" aria-label="Discord">
-                        <i class="fab fa-discord"></i>
-                    </a>
-                </div>
-            </div>
+    <div class="footer-content">
+        <div class="footer-logo">
+            <img src="assets/images/webcraft-logo-white.svg" alt="WebCraft Academy" class="footer-logo-img">
+            <div class="footer-tagline">Aprende desarrollo web de manera interactiva y divertida</div>
         </div>
         
-        <!-- Columna de Aprendizaje -->
-        <div class="col-lg-2 col-md-6 col-6 mb-4 mb-lg-0">
-            <div class="footer-links">
-                <h4>Aprendizaje</h4>
+        <div class="footer-nav">
+            <div class="footer-column">
+                <h4>Plataforma</h4>
                 <ul>
+                    <li><a href="index.php">Inicio</a></li>
                     <li><a href="index.php?page=modules">Módulos</a></li>
-                    <li><a href="index.php?page=lessons">Lecciones</a></li>
                     <li><a href="index.php?page=challenges">Desafíos</a></li>
-                    <li><a href="index.php?page=projects">Proyectos</a></li>
                     <li><a href="index.php?page=forum">Foro</a></li>
                 </ul>
             </div>
-        </div>
-        
-        <!-- Columna de Recursos -->
-        <div class="col-lg-2 col-md-6 col-6 mb-4 mb-lg-0">
-            <div class="footer-links">
+            
+            <div class="footer-column">
                 <h4>Recursos</h4>
                 <ul>
+                    <li><a href="index.php?page=faq">FAQ</a></li>
+                    <li><a href="index.php?page=docs">Documentación</a></li>
                     <li><a href="index.php?page=blog">Blog</a></li>
-                    <li><a href="index.php?page=tutorials">Tutoriales</a></li>
-                    <li><a href="index.php?page=documentation">Documentación</a></li>
-                    <li><a href="index.php?page=cheatsheets">Cheatsheets</a></li>
-                    <li><a href="index.php?page=roadmap">Ruta de aprendizaje</a></li>
+                    <li><a href="index.php?page=support">Soporte</a></li>
                 </ul>
             </div>
-        </div>
-        
-        <!-- Columna de Empresa -->
-        <div class="col-lg-2 col-md-6 col-6 mb-4 mb-lg-0">
-            <div class="footer-links">
-                <h4>Empresa</h4>
+            
+            <div class="footer-column">
+                <h4>Legal</h4>
                 <ul>
-                    <li><a href="index.php?page=about">Acerca de</a></li>
-                    <li><a href="index.php?page=team">Equipo</a></li>
-                    <li><a href="index.php?page=pricing">Planes</a></li>
-                    <li><a href="index.php?page=contact">Contacto</a></li>
-                    <li><a href="index.php?page=careers">Empleo</a></li>
+                    <li><a href="index.php?page=terms">Términos y Condiciones</a></li>
+                    <li><a href="index.php?page=privacy">Política de Privacidad</a></li>
+                    <li><a href="index.php?page=cookies">Política de Cookies</a></li>
                 </ul>
             </div>
-        </div>
-        
-        <!-- Columna de Soporte -->
-        <div class="col-lg-2 col-md-6 col-6 mb-4 mb-lg-0">
-            <div class="footer-links">
-                <h4>Soporte</h4>
+            
+            <div class="footer-column">
+                <h4>Comunidad</h4>
                 <ul>
-                    <li><a href="index.php?page=help">Ayuda</a></li>
-                    <li><a href="index.php?page=faqs">FAQs</a></li>
-                    <li><a href="index.php?page=terms">Términos</a></li>
-                    <li><a href="index.php?page=privacy">Privacidad</a></li>
-                    <li><a href="index.php?page=cookies">Cookies</a></li>
+                    <li><a href="https://github.com/StrykerUX/web-craft" target="_blank" rel="noopener noreferrer">GitHub <i class="fas fa-external-link-alt"></i></a></li>
+                    <li><a href="https://twitter.com/webcraftacademy" target="_blank" rel="noopener noreferrer">Twitter <i class="fas fa-external-link-alt"></i></a></li>
+                    <li><a href="https://discord.gg/webcraftacademy" target="_blank" rel="noopener noreferrer">Discord <i class="fas fa-external-link-alt"></i></a></li>
                 </ul>
             </div>
         </div>
     </div>
     
-    <!-- Línea separadora -->
-    <hr class="footer-divider">
-    
-    <!-- Pie de página con copyright -->
-    <div class="row footer-bottom">
-        <div class="col-md-6 mb-3 mb-md-0">
-            <p class="copyright mb-0">
-                &copy; <?php echo $currentYear; ?> WebCraft Academy. Todos los derechos reservados.
-            </p>
+    <div class="footer-bottom">
+        <div class="copyright">
+            &copy; <?php echo date('Y'); ?> WebCraft Academy. Todos los derechos reservados.
         </div>
-        <div class="col-md-6 text-md-end">
-            <p class="version mb-0">
-                Versión 1.0.0
-            </p>
+        
+        <div class="version">
+            v<?php echo defined('APP_VERSION') ? APP_VERSION : '1.0.0'; ?>
+        </div>
+        
+        <div class="footer-social">
+            <a href="https://github.com/StrykerUX/web-craft" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://twitter.com/webcraftacademy" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://discord.gg/webcraftacademy" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+                <i class="fab fa-discord"></i>
+            </a>
         </div>
     </div>
 </div>
