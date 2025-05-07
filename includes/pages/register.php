@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                 
                 // Insertar nuevo usuario
                 $stmt = $pdo->prepare("
-                    INSERT INTO users (username, email, password_hash, display_name, registration_date)
+                    INSERT INTO users (username, email, password, display_name, registration_date)
                     VALUES (?, ?, ?, ?, NOW())
                 ");
                 

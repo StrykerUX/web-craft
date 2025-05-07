@@ -25,11 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     } else {
         try {
             // Buscar usuario
-            $stmt = getDbConnection()->prepare("SELECT user_id, username, password_hash, account_status, developer_level FROM users WHERE username = ? OR email = ?");
+            $stmt = getDbConnection()->prepare("SELECT user_id, username, password, account_status, developer_level FROM users WHERE username = ? OR email = ?");
             $stmt->execute([$username, $username]);
             $user = $stmt->fetch();
             
-            if ($user && password_verify($password, $user['password_hash'])) {
+            if ($user && password_verify($password, $user['password'])) {
                 // Verificar estado de la cuenta
                 if ($user['account_status'] !== 'active') {
                     $error = 'Tu cuenta está ' . ($user['account_status'] === 'suspended' ? 'suspendida' : 'inactiva') . '. Por favor, contacta a soporte.';
