@@ -1,0 +1,637 @@
+/* 
+ * Profile Styles for WebCraft Academy
+ * 
+ * Este archivo contiene estilos específicos para la página de perfil del usuario.
+ * Hereda variables y estilos básicos del CSS principal.
+ */
+
+/* Importar variables y estilos base si es necesario */
+:root {
+    /* Estas variables deben coincidir con las del main.css */
+    /* Colores primarios del perfil */
+    --profile-bg: var(--bg-color);
+    --profile-text: var(--text-color);
+    --profile-sidebar-bg: var(--card-bg);
+    --profile-card-bg: var(--card-bg);
+    --profile-card-border: var(--border-color);
+    --profile-accent: var(--primary-color);
+    --profile-secondary: var(--secondary-color);
+    --profile-danger: #e53935;
+    
+    /* Tamaños y espaciados específicos */
+    --sidebar-width: 300px;
+    --card-spacing: 20px;
+    --card-radius: var(--border-radius);
+    --card-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Tema oscuro */
+html[data-theme="dark"] {
+    --profile-bg: var(--bg-color);
+    --profile-text: var(--text-color);
+    --profile-sidebar-bg: var(--card-bg);
+    --profile-card-bg: var(--card-bg);
+    --profile-card-border: var(--border-color);
+}
+
+/* Layout básico de la página */
+.profile-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+    color: var(--profile-text);
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.profile-header h1 {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+/* Alertas */
+.alert {
+    padding: 15px;
+    border-radius: var(--card-radius);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.alert i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.alert-success {
+    background-color: rgba(46, 125, 50, 0.1);
+    color: #2e7d32;
+    border: 1px solid rgba(46, 125, 50, 0.3);
+}
+
+.alert-danger {
+    background-color: rgba(211, 47, 47, 0.1);
+    color: #d32f2f;
+    border: 1px solid rgba(211, 47, 47, 0.3);
+}
+
+/* Layout principal */
+.profile-content {
+    display: flex;
+    gap: 30px;
+}
+
+/* Barra lateral */
+.profile-sidebar {
+    width: var(--sidebar-width);
+    background: var(--profile-sidebar-bg);
+    border-radius: var(--card-radius);
+    padding: 30px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--profile-card-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Avatar grande */
+.user-avatar-large {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+}
+
+.user-avatar-large img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--profile-accent);
+}
+
+.avatar-upload-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    background: var(--profile-accent);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.avatar-upload-button:hover {
+    background: var(--profile-secondary);
+}
+
+.hidden-file-input,
+.hidden-submit {
+    display: none;
+}
+
+/* Información básica del usuario */
+.user-info-basic {
+    text-align: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.username {
+    margin: 0 0 10px;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.user-level {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.level-badge {
+    background: var(--profile-accent);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.xp-count {
+    font-size: 0.9rem;
+    color: var(--profile-accent);
+    font-weight: 600;
+}
+
+.user-bio {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--profile-text);
+    opacity: 0.8;
+    margin: 0;
+    text-align: center;
+}
+
+/* Estadísticas del usuario */
+.user-stats {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--profile-card-border);
+}
+
+.stat {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+
+.stat-label {
+    color: var(--profile-text);
+    opacity: 0.7;
+}
+
+.stat-value {
+    font-weight: 600;
+}
+
+/* Área principal de formularios */
+.profile-forms {
+    flex: 1;
+    background: var(--profile-card-bg);
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--profile-card-border);
+    overflow: hidden;
+}
+
+/* Tabs */
+.tabs {
+    width: 100%;
+}
+
+.tab-list {
+    display: flex;
+    border-bottom: 1px solid var(--profile-card-border);
+}
+
+.tab-button {
+    padding: 15px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--profile-text);
+    opacity: 0.7;
+    transition: all 0.2s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.tab-button:hover {
+    opacity: 1;
+}
+
+.tab-button.active {
+    color: var(--profile-accent);
+    opacity: 1;
+    border-bottom-color: var(--profile-accent);
+}
+
+/* Contenido de tabs */
+.tab-content {
+    display: none;
+    padding: 30px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Secciones de formulario */
+.form-section {
+    margin-bottom: 30px;
+}
+
+.form-section h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--profile-card-border);
+}
+
+/* Grupos de formulario */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid var(--profile-card-border);
+    border-radius: var(--card-radius);
+    background: var(--profile-bg);
+    color: var(--profile-text);
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--profile-accent);
+    outline: none;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-text {
+    font-size: 0.8rem;
+    color: var(--profile-text);
+    opacity: 0.7;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Checkbox y radio */
+.form-check {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form-check-input {
+    margin-right: 10px;
+}
+
+.form-check-label {
+    font-size: 0.9rem;
+}
+
+/* Input con icono */
+.input-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon-wrapper i {
+    position: absolute;
+    left: 15px;
+    color: var(--profile-text);
+    opacity: 0.7;
+}
+
+.input-icon-wrapper input {
+    padding-left: 40px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--profile-text);
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.password-toggle:hover {
+    opacity: 0.8;
+}
+
+/* Acciones de formulario */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+/* Zona de peligro */
+.account-danger-zone {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid var(--profile-card-border);
+}
+
+.account-danger-zone h3 {
+    color: var(--profile-danger);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 15px;
+}
+
+.account-danger-zone p {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    color: var(--profile-text);
+    opacity: 0.7;
+}
+
+.danger-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-danger {
+    background: var(--profile-danger);
+    color: white;
+    border: none;
+}
+
+.btn-danger:hover {
+    background: #c62828;
+}
+
+/* Selector de tema */
+.theme-selector {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.theme-option {
+    flex: 1;
+    cursor: pointer;
+}
+
+.theme-option input {
+    display: none;
+}
+
+.theme-preview {
+    border: 2px solid var(--profile-card-border);
+    border-radius: var(--card-radius);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: border-color 0.2s ease;
+}
+
+.theme-option input:checked + .theme-preview {
+    border-color: var(--profile-accent);
+}
+
+.theme-preview i {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.theme-preview.light-theme {
+    background: #fff;
+    color: #333;
+}
+
+.theme-preview.dark-theme {
+    background: #1a1a1a;
+    color: #f0f0f0;
+}
+
+.theme-preview.system-theme {
+    background: linear-gradient(135deg, #fff 50%, #1a1a1a 50%);
+}
+
+.theme-preview.system-theme span {
+    color: #333;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 500px;
+    background: var(--profile-card-bg);
+    border-radius: var(--card-radius);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--profile-card-border);
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--profile-danger);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--profile-text);
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.modal-close:hover {
+    opacity: 1;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-confirm-form {
+    margin-top: 20px;
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid var(--profile-card-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+/* Botones generales */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    border: 1px solid transparent;
+}
+
+.btn i {
+    margin-right: 8px;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+}
+
+.btn-outline {
+    border-color: var(--profile-card-border);
+    color: var(--profile-text);
+    background: transparent;
+}
+
+.btn-outline:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Media queries para responsive */
+@media (max-width: 992px) {
+    .profile-content {
+        flex-direction: column;
+    }
+    
+    .profile-sidebar {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 20px 15px;
+    }
+    
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .tab-list {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .tab-button {
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+    
+    .tab-content {
+        padding: 20px 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .theme-selector {
+        flex-direction: column;
+    }
+}

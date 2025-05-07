@@ -1,0 +1,262 @@
+/**
+ * Estilos del componente de navegación de módulos
+ */
+
+:root {
+    /* Colores del componente (heredados de variables globales) */
+    --nav-bg: var(--card-bg);
+    --nav-border: var(--border-color);
+    --nav-text: var(--text-color);
+    --nav-accent: var(--primary-color);
+    --nav-hover: rgba(var(--primary-rgb), 0.1);
+    --nav-active: rgba(var(--primary-rgb), 0.15);
+    --nav-item-border: rgba(0, 0, 0, 0.08);
+    --nav-progress-bg: rgba(0, 0, 0, 0.1);
+    --nav-progress-fill: var(--primary-color);
+    --nav-completed: #4caf50;
+}
+
+/* Tema oscuro */
+html[data-theme="dark"] {
+    --nav-item-border: rgba(255, 255, 255, 0.08);
+    --nav-progress-bg: rgba(255, 255, 255, 0.1);
+}
+
+/* Contenedor principal */
+.module-navigation {
+    background-color: var(--nav-bg);
+    border: 1px solid var(--nav-border);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    font-size: 0.95rem;
+    color: var(--nav-text);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Encabezado de navegación */
+.module-nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--nav-border);
+    background-color: rgba(var(--primary-rgb), 0.03);
+}
+
+.module-nav-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.module-nav-toggle {
+    background: none;
+    border: none;
+    color: var(--nav-text);
+    opacity: 0.7;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.module-nav-toggle:hover {
+    background-color: var(--nav-hover);
+    opacity: 1;
+}
+
+/* Contenedor de lista */
+.module-nav-list-container {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* Mensajes de estado */
+.module-nav-loading,
+.module-nav-error,
+.module-nav-empty {
+    padding: 20px;
+    text-align: center;
+    color: var(--nav-text);
+    opacity: 0.7;
+}
+
+.module-nav-loading i,
+.module-nav-error i,
+.module-nav-empty i {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.module-nav-error {
+    color: #e53935;
+}
+
+/* Lista de módulos */
+.module-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Elemento de módulo */
+.module-nav-item {
+    border-bottom: 1px solid var(--nav-item-border);
+}
+
+.module-nav-item:last-child {
+    border-bottom: none;
+}
+
+/* Encabezado de módulo */
+.module-nav-module-header {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s ease;
+}
+
+.module-nav-module-header:hover {
+    background-color: var(--nav-hover);
+}
+
+.module-nav-item.active .module-nav-module-header {
+    background-color: var(--nav-active);
+}
+
+.module-nav-module-header i {
+    width: 20px;
+    margin-right: 12px;
+    color: var(--nav-accent);
+    font-size: 1.1rem;
+}
+
+.module-nav-module-title {
+    flex: 1;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Botón de expandir */
+.module-nav-expand {
+    background: none;
+    border: none;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--nav-text);
+    opacity: 0.6;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    margin-left: 8px;
+}
+
+.module-nav-expand:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    opacity: 1;
+}
+
+/* Barra de progreso del módulo */
+.module-nav-progress {
+    margin-left: 10px;
+    width: 40px;
+}
+
+.module-nav-progress-bar {
+    height: 4px;
+    background-color: var(--nav-progress-bg);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.module-nav-progress-fill {
+    height: 100%;
+    background-color: var(--nav-progress-fill);
+    border-radius: 2px;
+}
+
+/* Lista de lecciones */
+.module-nav-lessons-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+html[data-theme="dark"] .module-nav-lessons-list {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Elemento de lección */
+.module-nav-lesson {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px 10px 55px;
+    border-bottom: 1px solid var(--nav-item-border);
+    transition: background-color 0.2s ease;
+}
+
+.module-nav-lesson:last-child {
+    border-bottom: none;
+}
+
+.module-nav-lesson:hover {
+    background-color: var(--nav-hover);
+}
+
+.module-nav-lesson.active {
+    background-color: var(--nav-active);
+}
+
+.module-nav-lesson-status {
+    margin-right: 10px;
+    width: 18px;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+.module-nav-lesson.completed .module-nav-lesson-status {
+    color: var(--nav-completed);
+}
+
+.module-nav-lesson-link {
+    flex: 1;
+    text-decoration: none;
+    color: var(--nav-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.9rem;
+}
+
+.module-nav-lesson.completed .module-nav-lesson-link {
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+/* Media queries para responsive */
+@media (max-width: 768px) {
+    .module-nav-list-container {
+        max-height: 300px;
+    }
+    
+    .module-nav-module-header {
+        padding: 12px 15px;
+    }
+    
+    .module-nav-lesson {
+        padding: 8px 15px 8px 45px;
+    }
+}

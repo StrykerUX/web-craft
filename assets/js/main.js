@@ -1,390 +1,170 @@
 /**
- * WebCraft Academy - Script Principal
+ * JavaScript principal para WebCraft Academy
  * 
- * Este archivo contiene las funcionalidades básicas de la plataforma,
- * incluyendo interacciones de UI y comportamientos generales.
+ * Este archivo inicializa la funcionalidad común para todas las páginas
+ * y carga los componentes necesarios.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Inicializar todos los componentes de la UI
-    initUI();
+// Crear espacio de nombres para WebCraft si no existe
+if (typeof WebCraft === 'undefined') {
+    WebCraft = {};
+}
+
+// Inicialización principal
+WebCraft.init = function() {
+    // Detectar tema
+    WebCraft.initTheme();
     
-    // Manejar formularios si existen
-    initForms();
+    // Inicializar componentes comunes
+    WebCraft.initCommonComponents();
     
-    // Inicializar navegación móvil
-    initMobileNavigation();
+    // Inicializar funcionalidad específica para la página actual
+    WebCraft.initCurrentPage();
+};
+
+// Inicialización del tema
+WebCraft.initTheme = function() {
+    // Detectar preferencia de tema del sistema
+    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    // Obtener tema guardado o usar el detectado del sistema
+    const savedTheme = localStorage.getItem('theme') || (prefersDarkMode ? 'dark' : 'light');
+    
+    // Aplicar tema
+    WebCraft.applyTheme(savedTheme);
+    
+    // Escuchar cambios en la preferencia del sistema
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (localStorage.getItem('theme') === 'system' || !localStorage.getItem('theme')) {
+            WebCraft.applyTheme(e.matches ? 'dark' : 'light');
+        }
+    });
+};
+
+// Aplicar tema
+WebCraft.applyTheme = function(theme) {
+    if (theme === 'system') {
+        // Detectar preferencia del sistema
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', prefersDarkMode ? 'dark' : 'light');
+    } else {
+        document.documentElement.setAttribute('data-theme', theme);
+    }
+};
+
+// Inicializar componentes comunes
+WebCraft.initCommonComponents = function() {
+    // Inicializar toggles de contraseña
+    WebCraft.initPasswordToggles();
     
     // Inicializar dropdowns
-    initDropdowns();
+    WebCraft.initDropdowns();
     
-    // Inicializar visibilidad de contraseña
-    initPasswordToggles();
-    
-    // Inicializar carrusel de testimonios si existe
-    initTestimonialsCarousel();
-});
+    // Inicializar tooltips
+    WebCraft.initTooltips();
+};
 
-/**
- * Inicializa componentes generales de la UI
- */
-function initUI() {
-    console.log('Inicializando UI de WebCraft Academy...');
+// Inicializar toggles de contraseña
+WebCraft.initPasswordToggles = function() {
+    const toggles = document.querySelectorAll('.password-toggle');
     
-    // Asegurarse de que los enlaces externos abran en una nueva pestaña
-    document.querySelectorAll('a[href^="http"]').forEach(link => {
-        if (!link.hasAttribute('target')) {
-            link.setAttribute('target', '_blank');
-            link.setAttribute('rel', 'noopener noreferrer');
-        }
-    });
-    
-    // Agregar clases activas a elementos de navegación
-    highlightActiveNavItems();
-}
-
-/**
- * Resalta los elementos de navegación activos según la URL actual
- */
-function highlightActiveNavItems() {
-    const currentPath = window.location.pathname;
-    const searchParams = new URLSearchParams(window.location.search);
-    const currentPage = searchParams.get('page') || 'home';
-    
-    // Resaltar elementos de navegación principal
-    document.querySelectorAll('.nav-item').forEach(item => {
-        const link = item.querySelector('a');
-        if (link) {
-            const linkParams = new URLSearchParams(new URL(link.href, window.location.origin).search);
-            const linkPage = linkParams.get('page') || 'home';
+    toggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('input');
+            const icon = this.querySelector('i');
             
-            if (linkPage === currentPage) {
-                item.classList.add('active');
-            } else {
-                item.classList.remove('active');
-            }
-        }
-    });
-}
-
-/**
- * Inicializa el comportamiento de formularios
- */
-function initForms() {
-    // Manejar envío de formularios con funcionalidad AJAX si es necesario
-    document.querySelectorAll('form').forEach(form => {
-        // Validación de formularios del lado del cliente
-        form.addEventListener('submit', (e) => {
-            if (!validateForm(form)) {
-                e.preventDefault();
+            if (input && input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else if (input) {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
             }
         });
     });
-}
+};
 
-/**
- * Función simple de validación de formularios
- * @param {HTMLFormElement} form - El formulario a validar
- * @returns {boolean} - True si el formulario es válido, False si no
- */
-function validateForm(form) {
-    let isValid = true;
+// Inicializar dropdowns
+WebCraft.initDropdowns = function() {
+    const dropdowns = document.querySelectorAll('.dropdown');
     
-    // Validar campos requeridos
-    form.querySelectorAll('[required]').forEach(field => {
-        if (!field.value.trim()) {
-            isValid = false;
-            showFieldError(field, 'Este campo es obligatorio');
-        } else {
-            clearFieldError(field);
-        }
-    });
-    
-    // Validar emails
-    form.querySelectorAll('input[type="email"]').forEach(field => {
-        if (field.value.trim() && !validateEmail(field.value)) {
-            isValid = false;
-            showFieldError(field, 'Por favor, introduce un email válido');
-        }
-    });
-    
-    // Validar coincidencia de contraseñas si hay campos de confirmación
-    const passwordField = form.querySelector('input[name="password"]');
-    const confirmField = form.querySelector('input[name="confirm_password"]');
-    
-    if (passwordField && confirmField && passwordField.value !== confirmField.value) {
-        isValid = false;
-        showFieldError(confirmField, 'Las contraseñas no coinciden');
-    }
-    
-    return isValid;
-}
-
-/**
- * Muestra un mensaje de error para un campo de formulario
- * @param {HTMLElement} field - El campo con error
- * @param {string} message - El mensaje de error a mostrar
- */
-function showFieldError(field, message) {
-    // Eliminar cualquier mensaje de error anterior
-    clearFieldError(field);
-    
-    // Agregar clase de error al campo
-    field.classList.add('is-invalid');
-    
-    // Crear y mostrar mensaje de error
-    const errorElement = document.createElement('div');
-    errorElement.className = 'invalid-feedback';
-    errorElement.textContent = message;
-    
-    // Insertar después del campo
-    field.parentNode.appendChild(errorElement);
-}
-
-/**
- * Elimina mensajes de error de un campo
- * @param {HTMLElement} field - El campo a limpiar
- */
-function clearFieldError(field) {
-    field.classList.remove('is-invalid');
-    
-    // Eliminar mensajes de error previos
-    const parent = field.parentNode;
-    const errorElements = parent.querySelectorAll('.invalid-feedback');
-    errorElements.forEach(el => el.remove());
-}
-
-/**
- * Valida una dirección de email
- * @param {string} email - El email a validar
- * @returns {boolean} - True si es válido, False si no
- */
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
-
-/**
- * Inicializa la navegación móvil
- */
-function initMobileNavigation() {
-    const mobileToggle = document.querySelector('.mobile-menu-toggle');
-    const navMenu = document.querySelector('.nav-menu');
-    
-    if (mobileToggle && navMenu) {
-        mobileToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            mobileToggle.classList.toggle('active');
-        });
+    dropdowns.forEach(dropdown => {
+        const trigger = dropdown.querySelector('.dropdown-trigger');
+        const menu = dropdown.querySelector('.dropdown-menu');
         
-        // Cerrar menú al hacer clic en un elemento
-        navMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-                mobileToggle.classList.remove('active');
-            });
-        });
-    }
-}
-
-/**
- * Inicializa los dropdowns de la interfaz
- */
-function initDropdowns() {
-    document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
-        toggle.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const dropdown = toggle.closest('.dropdown');
-            const menu = dropdown.querySelector('.dropdown-menu');
-            
-            // Cerrar todos los demás dropdowns
-            document.querySelectorAll('.dropdown-menu.show').forEach(openMenu => {
-                if (openMenu !== menu) {
-                    openMenu.classList.remove('show');
+        if (trigger && menu) {
+            // Abrir/cerrar al hacer clic
+            trigger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                menu.classList.toggle('active');
+                
+                // Si está activo, agregar event listener para cerrar al hacer clic fuera
+                if (menu.classList.contains('active')) {
+                    document.addEventListener('click', closeDropdown);
+                } else {
+                    document.removeEventListener('click', closeDropdown);
                 }
             });
             
-            // Alternar el dropdown actual
-            menu.classList.toggle('show');
-        });
-    });
-    
-    // Cerrar dropdowns al hacer clic fuera
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.dropdown')) {
-            document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
-                menu.classList.remove('show');
-            });
-        }
-    });
-}
-
-/**
- * Inicializa los toggles de visibilidad de contraseñas
- */
-function initPasswordToggles() {
-    document.querySelectorAll('.password-toggle').forEach(toggle => {
-        toggle.addEventListener('click', () => {
-            const passwordField = toggle.closest('.input-icon-wrapper').querySelector('input');
-            const icon = toggle.querySelector('i');
-            
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-                toggle.setAttribute('aria-label', 'Ocultar contraseña');
-            } else {
-                passwordField.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-                toggle.setAttribute('aria-label', 'Ver contraseña');
+            // Función para cerrar dropdown
+            function closeDropdown(e) {
+                if (!menu.contains(e.target)) {
+                    menu.classList.remove('active');
+                    document.removeEventListener('click', closeDropdown);
+                }
             }
-        });
-    });
-}
-
-/**
- * Inicializa el carrusel de testimonios
- */
-function initTestimonialsCarousel() {
-    const slider = document.querySelector('.testimonials-slider');
-    
-    if (!slider) return;
-    
-    const testimonials = slider.querySelectorAll('.testimonial');
-    const indicators = document.querySelectorAll('.nav-indicators .indicator');
-    const prevButton = document.querySelector('.nav-prev');
-    const nextButton = document.querySelector('.nav-next');
-    
-    if (testimonials.length === 0) return;
-    
-    let currentIndex = 0;
-    
-    // Función para mostrar un testimonio específico
-    function showTestimonial(index) {
-        // Ocultar todos los testimonios
-        testimonials.forEach(testimonial => {
-            testimonial.style.display = 'none';
-        });
-        
-        // Quitar clase activa de todos los indicadores
-        indicators.forEach(indicator => {
-            indicator.classList.remove('active');
-        });
-        
-        // Mostrar el testimonio actual
-        testimonials[index].style.display = 'block';
-        
-        // Activar el indicador correspondiente
-        if (indicators[index]) {
-            indicators[index].classList.add('active');
         }
-        
-        // Actualizar índice actual
-        currentIndex = index;
-    }
-    
-    // Mostrar el primer testimonio al cargar
-    showTestimonial(0);
-    
-    // Configurar botones de navegación
-    if (prevButton) {
-        prevButton.addEventListener('click', () => {
-            const newIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
-            showTestimonial(newIndex);
-        });
-    }
-    
-    if (nextButton) {
-        nextButton.addEventListener('click', () => {
-            const newIndex = (currentIndex + 1) % testimonials.length;
-            showTestimonial(newIndex);
-        });
-    }
-    
-    // Configurar indicadores
-    indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => {
-            showTestimonial(index);
-        });
     });
-}
+};
 
-/**
- * Muestra mensajes de alerta personalizados
- * @param {string} message - El mensaje a mostrar
- * @param {string} type - El tipo de alerta (success, error, info, warning)
- * @param {number} duration - Duración en milisegundos antes de que desaparezca
- */
-function showAlert(message, type = 'info', duration = 3000) {
-    // Crear el elemento de alerta
-    const alertElement = document.createElement('div');
-    alertElement.className = `alert-toast alert-${type}`;
-    alertElement.textContent = message;
+// Inicializar tooltips
+WebCraft.initTooltips = function() {
+    const tooltipTriggers = document.querySelectorAll('[data-tooltip]');
     
-    // Agregar al cuerpo del documento
-    document.body.appendChild(alertElement);
-    
-    // Mostrar con animación
-    setTimeout(() => {
-        alertElement.classList.add('show');
-    }, 10);
-    
-    // Ocultar después de la duración especificada
-    setTimeout(() => {
-        alertElement.classList.remove('show');
-        // Eliminar del DOM después de la animación
-        setTimeout(() => {
-            document.body.removeChild(alertElement);
-        }, 300);
-    }, duration);
-}
-
-/**
- * Función de utilidad para hacer peticiones AJAX
- * @param {string} url - URL a la que hacer la petición
- * @param {Object} options - Opciones para la petición
- * @returns {Promise} - Promise con la respuesta
- */
-function ajaxRequest(url, options = {}) {
-    // Opciones por defecto
-    const defaultOptions = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    };
-    
-    // Combinar opciones
-    const finalOptions = { ...defaultOptions, ...options };
-    
-    // Si hay datos para enviar y es un objeto, convertirlo a JSON
-    if (finalOptions.data && typeof finalOptions.data === 'object' && !(finalOptions.data instanceof FormData)) {
-        finalOptions.body = JSON.stringify(finalOptions.data);
-        delete finalOptions.data;
-    } else if (finalOptions.data instanceof FormData) {
-        finalOptions.body = finalOptions.data;
-        delete finalOptions.data;
-        // Eliminar Content-Type para que el navegador establezca el boundary correcto
-        delete finalOptions.headers['Content-Type'];
-    }
-    
-    // Realizar la petición
-    return fetch(url, finalOptions)
-        .then(response => {
-            // Verificar si la respuesta es exitosa
-            if (!response.ok) {
-                throw new Error(`Error ${response.status}: ${response.statusText}`);
-            }
+    tooltipTriggers.forEach(trigger => {
+        const tooltipText = trigger.getAttribute('data-tooltip');
+        
+        // Crear elemento de tooltip
+        const tooltip = document.createElement('div');
+        tooltip.className = 'tooltip';
+        tooltip.textContent = tooltipText;
+        
+        // Agregar al documento
+        document.body.appendChild(tooltip);
+        
+        // Mostrar tooltip al pasar el ratón
+        trigger.addEventListener('mouseenter', function(e) {
+            const rect = trigger.getBoundingClientRect();
             
-            // Intentar parsear como JSON
-            return response.json()
-                .catch(() => {
-                    // Si no es JSON, devolver el texto
-                    return response.text();
-                });
+            tooltip.style.left = (rect.left + rect.width / 2 - tooltip.offsetWidth / 2) + 'px';
+            tooltip.style.top = (rect.top - tooltip.offsetHeight - 5 + window.scrollY) + 'px';
+            tooltip.classList.add('active');
         });
-}
+        
+        // Ocultar tooltip al quitar el ratón
+        trigger.addEventListener('mouseleave', function() {
+            tooltip.classList.remove('active');
+        });
+    });
+};
+
+// Inicializar funcionalidad específica para la página actual
+WebCraft.initCurrentPage = function() {
+    // Obtener nombre de página del atributo de clase del body
+    const body = document.body;
+    const pageClass = Array.from(body.classList).find(cls => cls.startsWith('page-'));
+    const pageName = pageClass ? pageClass.replace('page-', '') : null;
+    
+    // Ejecutar inicialización específica según la página
+    if (pageName && typeof WebCraft[`init${pageName.charAt(0).toUpperCase() + pageName.slice(1)}Page`] === 'function') {
+        WebCraft[`init${pageName.charAt(0).toUpperCase() + pageName.slice(1)}Page`]();
+    }
+};
+
+// Cargar componentes comunes
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar la aplicación
+    WebCraft.init();
+});
