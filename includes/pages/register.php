@@ -4,6 +4,9 @@ if (!defined('WEBCRAFT')) {
     die('Acceso directo no permitido');
 }
 
+// Iniciar buffer de salida para evitar errores de 'headers already sent'
+ob_start();
+
 // Verificar si ya está autenticado, redirigir a dashboard
 if (isset($_SESSION['user_id'])) {
     header('Location: index.php?page=dashboard');
@@ -91,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                     $_SESSION['developer_level'] = 'Principiante';
                     
                     // Redirigir a onboarding o dashboard según corresponda
-                    $redirect = filter_input(INPUT_GET, 'redirect', FILTER_SANITIZE_STRING);
+                    $redirect = filter_input(INPUT_GET, 'redirect', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                     $allowedRedirects = ['dashboard', 'profile', 'modules', 'lessons', 'challenges', 'editor'];
                     
                     if (!empty($redirect) && in_array($redirect, $allowedRedirects)) {
@@ -263,3 +266,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
         </div>
     </div>
 </div>
+
+<?php
+// Flush the output buffer to send content to the browser
+ob_end_flush();
+?>
