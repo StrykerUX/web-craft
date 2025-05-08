@@ -1,0 +1,116 @@
+{
+    "id": 2,
+    "titulo": "Estructura Básica de un Documento HTML",
+    "descripcion": "Aprende la estructura fundamental de un documento HTML y sus componentes principales.",
+    "duracion_estimada": 45,
+    "nivel": "Principiante",
+    "xp_recompensa": 75,
+    "contenido": {
+        "teoria": {
+            "introduccion": "En la lección anterior creamos una página HTML simple. Ahora profundizaremos en la estructura básica de un documento HTML, entendiendo cada parte y por qué es importante.",
+            "secciones": [
+                {
+                    "titulo": "La Declaración DOCTYPE",
+                    "contenido": "Cada documento HTML debe comenzar con una declaración DOCTYPE que le indica al navegador qué versión de HTML estás utilizando.\n\nEn HTML5, la declaración es simple:\n\n```html\n<!DOCTYPE html>\n```\n\nEn versiones anteriores de HTML, estas declaraciones eran más complejas y referenciaban un DTD (Document Type Definition).\n\nLa declaración DOCTYPE no es una etiqueta HTML, sino una 'instrucción' para el navegador. Sin ella, el navegador puede entrar en 'modo quirks' y renderizar la página de manera inconsistente."
+                },
+                {
+                    "titulo": "El Elemento HTML",
+                    "contenido": "El elemento `<html>` es el elemento raíz que envuelve todo el contenido de la página. También se conoce como el elemento 'documento'.\n\n```html\n<html lang=\"es\">\n  <!-- Contenido del documento aquí -->\n</html>\n```\n\nEl atributo `lang` especifica el idioma del contenido del documento, lo que ayuda a los motores de búsqueda y navegadores."
+                },
+                {
+                    "titulo": "La Sección Head",
+                    "contenido": "El elemento `<head>` contiene metainformación sobre el documento que no se muestra directamente en la página web. Incluye:\n\n- El título del documento\n- Enlaces a hojas de estilo CSS\n- Enlaces a scripts JavaScript\n- Metadatos (como el autor, palabras clave, descripción)\n- Configuración del viewport para dispositivos móviles\n\n```html\n<head>\n  <title>Título de la página</title>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <meta name=\"description\" content=\"Descripción de la página\">\n  <link rel=\"stylesheet\" href=\"estilos.css\">\n  <script src=\"script.js\"></script>\n</head>\n```"
+                },
+                {
+                    "titulo": "Metadatos Importantes",
+                    "contenido": "Algunos metadatos clave que deberías incluir en casi todas tus páginas:\n\n- **charset**: Define la codificación de caracteres, generalmente UTF-8 para soporte internacional.\n\n```html\n<meta charset=\"UTF-8\">\n```\n\n- **viewport**: Esencial para el diseño responsive, controla cómo se muestra la página en dispositivos móviles.\n\n```html\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n```\n\n- **description**: Una breve descripción de la página que utilizan los motores de búsqueda.\n\n```html\n<meta name=\"description\" content=\"Descripción de tu página aquí\">\n```"
+                },
+                {
+                    "titulo": "La Sección Body",
+                    "contenido": "El elemento `<body>` contiene todo el contenido visible de la página web, como texto, imágenes, enlaces, tablas, listas, etc.\n\n```html\n<body>\n  <header>\n    <h1>Título Principal</h1>\n    <nav><!-- Navegación --></nav>\n  </header>\n  \n  <main>\n    <article>\n      <h2>Título del Artículo</h2>\n      <p>Contenido...</p>\n    </article>\n  </main>\n  \n  <footer>\n    <p>&copy; 2025 Mi Sitio Web</p>\n  </footer>\n</body>\n```\n\nDentro del `<body>` puedes utilizar elementos semánticos como `<header>`, `<nav>`, `<main>`, `<article>`, `<section>`, `<aside>` y `<footer>` para organizar tu contenido de manera estructurada, lo que estudiaremos en profundidad más adelante."
+                }
+            ]
+        },
+        "practica": {
+            "instrucciones": "Ahora practicaremos creando un documento HTML completo con todos los elementos estructurales básicos y metadatos importantes. Sigue estos pasos para crear un template HTML que podrás usar como base para futuros proyectos.",
+            "pasos": [
+                {
+                    "paso": 1,
+                    "titulo": "Crear la estructura básica",
+                    "descripcion": "Comienza escribiendo la estructura fundamental:",
+                    "codigo": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Mi Plantilla HTML</title>\n</head>\n<body>\n    <!-- Contenido visible aquí -->\n</body>\n</html>",
+                    "explicacion": "Esta es la estructura mínima recomendada para cualquier documento HTML5. Incluye la declaración DOCTYPE, el elemento html con el atributo de idioma, la sección head con metadatos esenciales y una sección body vacía."
+                },
+                {
+                    "paso": 2,
+                    "titulo": "Añadir metadatos adicionales",
+                    "descripcion": "Ampliemos los metadatos en la sección head:",
+                    "codigo": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <meta name=\"description\" content=\"Una plantilla básica de HTML para mis proyectos web\">\n    <meta name=\"author\" content=\"Tu Nombre\">\n    <title>Mi Plantilla HTML</title>\n    <!-- Enlaces a CSS (comentados por ahora) -->\n    <!-- <link rel=\"stylesheet\" href=\"css/estilos.css\"> -->\n</head>\n<body>\n    <!-- Contenido visible aquí -->\n</body>\n</html>",
+                    "explicacion": "Hemos añadido metadatos para la descripción y autor de la página, que son útiles para SEO y para organizar tus proyectos. También hemos incluido un enlace comentado a una hoja de estilos CSS, que podrás descomentar cuando tengas tu archivo CSS."
+                },
+                {
+                    "paso": 3,
+                    "titulo": "Estructurar el contenido del body",
+                    "descripcion": "Ahora vamos a añadir una estructura semántica básica al body:",
+                    "codigo": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <meta name=\"description\" content=\"Una plantilla básica de HTML para mis proyectos web\">\n    <meta name=\"author\" content=\"Tu Nombre\">\n    <title>Mi Plantilla HTML</title>\n    <!-- Enlaces a CSS (comentados por ahora) -->\n    <!-- <link rel=\"stylesheet\" href=\"css/estilos.css\"> -->\n</head>\n<body>\n    <header>\n        <h1>Título Principal</h1>\n        <nav>\n            <ul>\n                <li><a href=\"#\">Inicio</a></li>\n                <li><a href=\"#\">Acerca de</a></li>\n                <li><a href=\"#\">Contacto</a></li>\n            </ul>\n        </nav>\n    </header>\n    \n    <main>\n        <section>\n            <h2>Sección 1</h2>\n            <p>Contenido de la sección...</p>\n        </section>\n        \n        <section>\n            <h2>Sección 2</h2>\n            <p>Contenido de la sección...</p>\n        </section>\n    </main>\n    \n    <footer>\n        <p>&copy; 2025 Mi Sitio Web. Todos los derechos reservados.</p>\n    </footer>\n</body>\n</html>",
+                    "explicacion": "Hemos estructurado el body con elementos semánticos:\n\n- Un header con un título principal y una navegación\n- Una sección main con dos secciones de contenido\n- Un footer con información de copyright\n\nEsta estructura semántica ayuda a los navegadores, lectores de pantalla y motores de búsqueda a entender mejor tu contenido."
+                },
+                {
+                    "paso": 4,
+                    "titulo": "Añadir un script JavaScript",
+                    "descripcion": "Finalmente, vamos a añadir un enlace a un archivo JavaScript:",
+                    "codigo": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <meta name=\"description\" content=\"Una plantilla básica de HTML para mis proyectos web\">\n    <meta name=\"author\" content=\"Tu Nombre\">\n    <title>Mi Plantilla HTML</title>\n    <!-- Enlaces a CSS (comentados por ahora) -->\n    <!-- <link rel=\"stylesheet\" href=\"css/estilos.css\"> -->\n</head>\n<body>\n    <header>\n        <h1>Título Principal</h1>\n        <nav>\n            <ul>\n                <li><a href=\"#\">Inicio</a></li>\n                <li><a href=\"#\">Acerca de</a></li>\n                <li><a href=\"#\">Contacto</a></li>\n            </ul>\n        </nav>\n    </header>\n    \n    <main>\n        <section>\n            <h2>Sección 1</h2>\n            <p>Contenido de la sección...</p>\n        </section>\n        \n        <section>\n            <h2>Sección 2</h2>\n            <p>Contenido de la sección...</p>\n        </section>\n    </main>\n    \n    <footer>\n        <p>&copy; 2025 Mi Sitio Web. Todos los derechos reservados.</p>\n    </footer>\n    \n    <!-- Scripts de JavaScript (al final del body para mejor rendimiento) -->\n    <!-- <script src=\"js/script.js\"></script> -->\n</body>\n</html>",
+                    "explicacion": "Hemos añadido un enlace comentado a un archivo JavaScript al final del body. Esta es una práctica común para mejorar el rendimiento de carga de la página, ya que permite que todo el HTML se cargue antes de ejecutar el JavaScript."
+                }
+            ]
+        },
+        "ejercicio": {
+            "titulo": "Creación de un Template HTML Completo",
+            "descripcion": "Aplica lo que has aprendido creando un template HTML completo y personalizado que incluya todos los elementos estructurales y metadatos importantes.",
+            "instrucciones": "Crea un documento HTML que incluya:\n\n1. La declaración DOCTYPE correcta\n2. Un elemento html con el atributo lang apropiado\n3. Una sección head completa con al menos 4 metaetiquetas diferentes\n4. Una estructura de body semántica con header, nav, main (con al menos una section y un article), aside y footer\n5. Enlaces a archivos CSS y JavaScript (pueden estar comentados)\n6. Un favicon (puedes incluirlo como comentario)\n\nPersonaliza el contenido con un tema de tu elección (portfolio personal, blog de tecnología, tienda online, etc.)",
+            "solucion": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <meta name=\"description\" content=\"Portfolio profesional de [Tu Nombre] - Desarrollador Web\">\n    <meta name=\"keywords\" content=\"portfolio, desarrollo web, HTML, CSS, JavaScript\">\n    <meta name=\"author\" content=\"[Tu Nombre]\">\n    <meta name=\"robots\" content=\"index, follow\">\n    <title>Portfolio de [Tu Nombre] | Desarrollador Web</title>\n    <!-- Favicon -->\n    <!-- <link rel=\"icon\" type=\"image/png\" href=\"img/favicon.png\"> -->\n    <!-- CSS -->\n    <!-- <link rel=\"stylesheet\" href=\"css/normalize.css\"> -->\n    <!-- <link rel=\"stylesheet\" href=\"css/estilos.css\"> -->\n</head>\n<body>\n    <header>\n        <h1>[Tu Nombre]</h1>\n        <p>Desarrollador Web</p>\n        \n        <nav>\n            <ul>\n                <li><a href=\"#inicio\">Inicio</a></li>\n                <li><a href=\"#proyectos\">Proyectos</a></li>\n                <li><a href=\"#habilidades\">Habilidades</a></li>\n                <li><a href=\"#contacto\">Contacto</a></li>\n            </ul>\n        </nav>\n    </header>\n    \n    <main>\n        <section id=\"inicio\">\n            <h2>Sobre Mí</h2>\n            <p>Breve descripción sobre ti y tu experiencia.</p>\n        </section>\n        \n        <section id=\"proyectos\">\n            <h2>Mis Proyectos</h2>\n            \n            <article class=\"proyecto\">\n                <h3>Proyecto 1</h3>\n                <p>Descripción del proyecto...</p>\n            </article>\n            \n            <article class=\"proyecto\">\n                <h3>Proyecto 2</h3>\n                <p>Descripción del proyecto...</p>\n            </article>\n        </section>\n        \n        <section id=\"habilidades\">\n            <h2>Mis Habilidades</h2>\n            <ul>\n                <li>HTML5</li>\n                <li>CSS3</li>\n                <li>JavaScript</li>\n                <li>Otras habilidades...</li>\n            </ul>\n        </section>\n    </main>\n    \n    <aside>\n        <h2>Enlaces de Interés</h2>\n        <ul>\n            <li><a href=\"#\">Mi GitHub</a></li>\n            <li><a href=\"#\">Mi LinkedIn</a></li>\n            <li><a href=\"#\">Mi Blog</a></li>\n        </ul>\n    </aside>\n    \n    <footer>\n        <section id=\"contacto\">\n            <h2>Contacto</h2>\n            <p>Email: tu@email.com</p>\n        </section>\n        \n        <p>&copy; 2025 [Tu Nombre]. Todos los derechos reservados.</p>\n    </footer>\n    \n    <!-- JavaScript -->\n    <!-- <script src=\"js/main.js\"></script> -->\n</body>\n</html>",
+            "pistas": [
+                "Recuerda incluir el atributo lang en el elemento html",
+                "Las metaetiquetas importantes incluyen charset, viewport, description y author",
+                "Utiliza elementos semánticos como header, nav, main, section, article, aside y footer",
+                "Coloca los enlaces a JavaScript al final del body para mejorar el rendimiento",
+                "Puedes comentar los enlaces a recursos externos si no existen todavía"
+            ],
+            "criterios_evaluacion": [
+                "El documento debe comenzar con la declaración DOCTYPE correcta",
+                "El elemento html debe incluir el atributo lang",
+                "La sección head debe contener al menos 4 metaetiquetas diferentes",
+                "La estructura del body debe utilizar elementos semánticos adecuadamente",
+                "El documento debe incluir comentarios para recursos externos no existentes",
+                "El contenido debe estar correctamente estructurado con encabezados jerárquicos (h1, h2, h3...)"
+            ]
+        },
+        "html_template": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Mi Template HTML</title>\n    <!-- Añade más metaetiquetas aquí -->\n</head>\n<body>\n    <!-- Estructura tu contenido aquí -->\n    \n</body>\n</html>",
+        "css_template": "/* Este es un CSS básico que puedes modificar más adelante */\nbody {\n    font-family: Arial, sans-serif;\n    margin: 0;\n    padding: 20px;\n    line-height: 1.6;\n}\n\nheader, footer {\n    background-color: #f8f9fa;\n    padding: 20px;\n    text-align: center;\n}\n\nnav ul {\n    list-style-type: none;\n    padding: 0;\n}\n\nnav ul li {\n    display: inline;\n    margin: 0 10px;\n}\n\nmain {\n    padding: 20px 0;\n}\n\nsection {\n    margin-bottom: 30px;\n}",
+        "js_template": "// Este es un archivo JavaScript básico que puedes modificar más adelante\ndocument.addEventListener('DOMContentLoaded', function() {\n    console.log('El documento HTML ha sido completamente cargado y parseado');\n    \n    // Tu código JavaScript aquí\n});",
+        "recursos_adicionales": [
+            {
+                "titulo": "HTML5 Doctor - Elementos semánticos",
+                "url": "http://html5doctor.com/element-index/",
+                "tipo": "referencia"
+            },
+            {
+                "titulo": "MDN - Metadatos en HTML",
+                "url": "https://developer.mozilla.org/es/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML",
+                "tipo": "tutorial"
+            },
+            {
+                "titulo": "HTML5 Boilerplate",
+                "url": "https://html5boilerplate.com/",
+                "tipo": "herramienta"
+            },
+            {
+                "titulo": "Can I use - Soporte de navegadores para HTML5",
+                "url": "https://caniuse.com/",
+                "tipo": "herramienta"
+            }
+        ]
+    },
+    "requisitos_previos": [1],
+    "siguiente_leccion": 3
+}

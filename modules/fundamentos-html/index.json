@@ -1,0 +1,141 @@
+{
+    "id": 1,
+    "titulo": "Fundamentos HTML",
+    "descripcion": "Aprende los conceptos básicos del lenguaje HTML para crear la estructura de tus páginas web.",
+    "imagen": "html-module.png",
+    "nivel": "Principiante",
+    "duracion_estimada": "6-8 horas",
+    "requisitos_previos": [],
+    "objetivos_aprendizaje": [
+        "Comprender la estructura básica de un documento HTML",
+        "Manejar etiquetas de texto y establecer jerarquías de contenido",
+        "Crear enlaces e hipervínculos para navegar entre páginas",
+        "Incorporar imágenes y elementos multimedia",
+        "Implementar tablas para organizar datos",
+        "Construir formularios para la interacción con usuarios",
+        "Utilizar elementos semánticos para mejorar la estructura y accesibilidad"
+    ],
+    "lecciones": [
+        {
+            "id": 1,
+            "titulo": "Introducción al HTML y la Web",
+            "descripcion": "Comprende qué es HTML, para qué sirve y su papel en el desarrollo web.",
+            "duracion_estimada": 30,
+            "xp_recompensa": 50
+        },
+        {
+            "id": 2,
+            "titulo": "Estructura Básica de un Documento HTML",
+            "descripcion": "Aprende la estructura fundamental de un documento HTML y sus componentes principales.",
+            "duracion_estimada": 45,
+            "xp_recompensa": 75
+        },
+        {
+            "id": 3,
+            "titulo": "Texto y Tipografía",
+            "descripcion": "Aprende a manejar etiquetas de texto y establecer una jerarquía de contenido efectiva.",
+            "duracion_estimada": 40,
+            "xp_recompensa": 75
+        },
+        {
+            "id": 4,
+            "titulo": "Enlaces e Hipervínculos",
+            "descripcion": "Crea y maneja diferentes tipos de enlaces para navegar entre páginas y recursos.",
+            "duracion_estimada": 50,
+            "xp_recompensa": 100
+        },
+        {
+            "id": 5,
+            "titulo": "Imágenes y Multimedia",
+            "descripcion": "Incorpora y optimiza elementos multimedia en tus páginas web.",
+            "duracion_estimada": 60,
+            "xp_recompensa": 100
+        },
+        {
+            "id": 6,
+            "titulo": "Tablas HTML",
+            "descripcion": "Estructura datos tabulares de manera correcta y accesible.",
+            "duracion_estimada": 60,
+            "xp_recompensa": 100
+        },
+        {
+            "id": 7,
+            "titulo": "Formularios Básicos",
+            "descripcion": "Crea formularios interactivos para recopilar datos de los usuarios.",
+            "duracion_estimada": 75,
+            "xp_recompensa": 125
+        },
+        {
+            "id": 8,
+            "titulo": "Elementos Avanzados de Formularios",
+            "descripcion": "Domina elementos complejos de formularios y técnicas de validación.",
+            "duracion_estimada": 75,
+            "xp_recompensa": 125
+        },
+        {
+            "id": 9,
+            "titulo": "Elementos Semánticos",
+            "descripcion": "Estructura páginas con etiquetas semánticas HTML5 para mejorar SEO y accesibilidad.",
+            "duracion_estimada": 60,
+            "xp_recompensa": 125
+        },
+        {
+            "id": 10,
+            "titulo": "HTML Avanzado y Buenas Prácticas",
+            "descripcion": "Implementa técnicas avanzadas, depuración y optimización de código HTML.",
+            "duracion_estimada": 90,
+            "xp_recompensa": 150
+        }
+    ],
+    "proyecto_final": {
+        "titulo": "Sitio Web Personal",
+        "descripcion": "Crea un sitio web personal completo que incluya una página de inicio, una sección 'Acerca de', una galería, un blog y un formulario de contacto. Este proyecto te permitirá aplicar todos los conceptos aprendidos en el módulo de HTML.",
+        "requisitos": [
+            "Múltiples páginas interconectadas con una navegación clara",
+            "Uso apropiado de la estructura semántica (header, nav, main, section, article, footer)",
+            "Tablas para mostrar información estructurada",
+            "Formulario de contacto completo con diversos tipos de campos",
+            "Optimización para accesibilidad y SEO básico",
+            "Estructura de directorios y archivos organizada",
+            "Código HTML validado y sin errores"
+        ],
+        "criterios_evaluacion": [
+            "Corrección estructural y semántica del código HTML",
+            "Uso efectivo de todos los tipos de elementos estudiados",
+            "Navegación intuitiva y enlaces funcionales",
+            "Accesibilidad básica (textos alternativos, etiquetas ARIA, etc.)",
+            "Organización lógica del contenido",
+            "Originalidad y creatividad en el diseño (incluso sin CSS avanzado)"
+        ],
+        "xp_recompensa": 500,
+        "insignia": "html-master"
+    },
+    "recursos_adicionales": [
+        {
+            "titulo": "HTML: Lenguaje de etiquetas de hipertexto",
+            "url": "https://developer.mozilla.org/es/docs/Web/HTML",
+            "tipo": "documentacion"
+        },
+        {
+            "titulo": "Curso HTML & CSS - FreeCodeCamp",
+            "url": "https://www.freecodecamp.org/learn/responsive-web-design/",
+            "tipo": "curso"
+        },
+        {
+            "titulo": "HTML Validator W3C",
+            "url": "https://validator.w3.org/",
+            "tipo": "herramienta"
+        },
+        {
+            "titulo": "HTML5 Element Flowchart",
+            "url": "http://html5doctor.com/downloads/h5d-sectioning-flowchart.pdf",
+            "tipo": "guia"
+        },
+        {
+            "titulo": "HTML Cheat Sheet",
+            "url": "https://htmlcheatsheet.com/",
+            "tipo": "referencia"
+        }
+    ],
+    "siguiente_modulo": 2
+}

@@ -1,0 +1,94 @@
+{
+    "id": 1,
+    "titulo": "Introducción al HTML y la Web",
+    "descripcion": "Comprende qué es HTML, para qué sirve y su papel en el desarrollo web.",
+    "duracion_estimada": 30,
+    "nivel": "Principiante",
+    "xp_recompensa": 50,
+    "contenido": {
+        "teoria": {
+            "introduccion": "**¡Bienvenido a tu primera lección de WebCraft Academy!** Hoy comenzarás tu viaje para convertirte en un desarrollador web aprendiendo sobre HTML, el lenguaje fundamental para crear páginas web.",
+            "secciones": [
+                {
+                    "titulo": "¿Qué es HTML?",
+                    "contenido": "HTML (HyperText Markup Language) es el código que se utiliza para estructurar y dar significado al contenido web. Por ejemplo, definir párrafos, encabezados, tablas de datos, o insertar imágenes y videos en la página.\n\nA diferencia de un lenguaje de programación que utiliza instrucciones para realizar tareas, HTML utiliza etiquetas para identificar diferentes tipos de contenido y los propósitos que cumplen en la página. Es como el esqueleto de una página web."
+                },
+                {
+                    "titulo": "Un poco de historia",
+                    "contenido": "HTML fue creado por Tim Berners-Lee en 1991 mientras trabajaba en el CERN. Su objetivo era crear un sistema para compartir documentos científicos. Desde entonces, ha evolucionado a través de varias versiones:\n\n- **HTML 1.0** (1991): La primera versión, muy básica.\n- **HTML 2.0** (1995): Añadió formularios.\n- **HTML 3.2** (1997): Introdujo tablas y más opciones de formato.\n- **HTML 4.01** (1999): Separó estructura de presentación.\n- **XHTML** (2000): Una versión más estricta basada en XML.\n- **HTML5** (2014): La versión actual, con soporte para audio, video, canvas y más."
+                },
+                {
+                    "titulo": "El papel de HTML en la web moderna",
+                    "contenido": "En el desarrollo web moderno, HTML es solo una parte de lo que hace que las páginas web funcionen. Podemos visualizarlo así:\n\n- **HTML**: Proporciona la estructura y el contenido (el 'qué').\n- **CSS**: Controla la apariencia y el diseño (el 'cómo se ve').\n- **JavaScript**: Añade interactividad y comportamiento dinámico (el 'qué hace').\n\nJuntos, estos tres lenguajes forman la base de casi todas las páginas web que visitas a diario."
+                },
+                {
+                    "titulo": "Herramientas básicas para trabajar con HTML",
+                    "contenido": "Para empezar a trabajar con HTML, solo necesitas dos cosas:\n\n1. Un **editor de texto**: Cualquier editor servirá, pero es recomendable usar uno diseñado para programación como Visual Studio Code, Sublime Text o incluso el Bloc de notas.\n\n2. Un **navegador web**: Para visualizar tu trabajo. Chrome, Firefox, Safari o Edge servirán perfectamente.\n\nEn WebCraft Academy, nuestro editor integrado te proporciona ambas herramientas en un solo lugar."
+                }
+            ]
+        },
+        "practica": {
+            "instrucciones": "Ahora es momento de poner en práctica lo aprendido. Vamos a crear nuestro primer documento HTML y ver cómo se visualiza en el navegador. A diferencia de lo que harás en el trabajo real, te guiaremos paso a paso.",
+            "pasos": [
+                {
+                    "paso": 1,
+                    "titulo": "Crear un documento HTML básico",
+                    "descripcion": "Escribe el siguiente código en el editor:",
+                    "codigo": "<!DOCTYPE html>\n<html>\n<head>\n    <title>Mi Primera Página Web</title>\n</head>\n<body>\n    <h1>¡Hola Mundo!</h1>\n    <p>Esta es mi primera página web.</p>\n</body>\n</html>",
+                    "explicacion": "Este es el esqueleto básico de cualquier página HTML. Incluye la declaración DOCTYPE, las etiquetas html, head y body, un título, un encabezado y un párrafo."
+                },
+                {
+                    "paso": 2,
+                    "titulo": "Analizar la estructura",
+                    "descripcion": "Vamos a entender qué hace cada parte:",
+                    "explicacion": "- `<!DOCTYPE html>`: Le dice al navegador que este documento es HTML5.\n- `<html>`: Es el elemento raíz que contiene toda la página.\n- `<head>`: Contiene metadatos sobre el documento, como el título.\n- `<title>`: Define el título que aparece en la pestaña del navegador.\n- `<body>`: Contiene todo el contenido visible de la página.\n- `<h1>`: Define un encabezado principal.\n- `<p>`: Define un párrafo."
+                },
+                {
+                    "paso": 3,
+                    "titulo": "Visualizar el resultado",
+                    "descripcion": "Haz clic en 'Vista Previa' para ver cómo se ve tu página en el navegador.",
+                    "explicacion": "¡Felicidades! Has creado tu primera página web. Es simple, pero tiene todos los componentes esenciales. En las próximas lecciones, aprenderemos a añadir más contenido y estilo."
+                }
+            ]
+        },
+        "ejercicio": {
+            "titulo": "Tu Página Personal",
+            "descripcion": "Es hora de personalizar tu primera página web. Crea una página simple sobre ti mismo.",
+            "instrucciones": "Modifica el código HTML para que tu página incluya:\n\n1. Un título apropiado para la página\n2. Un encabezado principal con tu nombre\n3. Un párrafo que describa brevemente tus intereses\n4. Un segundo párrafo que mencione por qué estás aprendiendo desarrollo web",
+            "solucion": "<!DOCTYPE html>\n<html>\n<head>\n    <title>Sobre [Tu Nombre]</title>\n</head>\n<body>\n    <h1>[Tu Nombre]</h1>\n    <p>Me interesan [tus intereses, por ejemplo: la tecnología, los videojuegos, la música].</p>\n    <p>Estoy aprendiendo desarrollo web porque [tu razón, por ejemplo: quiero crear mis propios sitios web, para mejorar mis habilidades profesionales].</p>\n</body>\n</html>",
+            "pistas": [
+                "Recuerda que el título va dentro de las etiquetas <title>",
+                "El encabezado principal va dentro de las etiquetas <h1>",
+                "Cada párrafo debe ir dentro de sus propias etiquetas <p>"
+            ],
+            "criterios_evaluacion": [
+                "La página debe incluir la estructura básica HTML (DOCTYPE, html, head, body)",
+                "Debe tener un título personalizado",
+                "Debe contener un encabezado h1 con tu nombre",
+                "Debe incluir al menos dos párrafos con contenido personal"
+            ]
+        },
+        "html_template": "<!DOCTYPE html>\n<html>\n<head>\n    <title>Mi Página Web</title>\n</head>\n<body>\n    <!-- Añade tu contenido aquí -->\n    \n</body>\n</html>",
+        "css_template": "/* Aquí puedes añadir CSS más adelante */\nbody {\n    font-family: Arial, sans-serif;\n    margin: 20px;\n}",
+        "js_template": "// Aquí puedes añadir JavaScript más adelante",
+        "recursos_adicionales": [
+            {
+                "titulo": "HTML: Lenguaje de etiquetas de hipertexto",
+                "url": "https://developer.mozilla.org/es/docs/Web/HTML",
+                "tipo": "documentacion"
+            },
+            {
+                "titulo": "Historia de HTML",
+                "url": "https://www.w3.org/People/Raggett/book4/ch02.html",
+                "tipo": "articulo"
+            },
+            {
+                "titulo": "HTML Básico",
+                "url": "https://www.w3schools.com/html/html_basic.asp",
+                "tipo": "tutorial"
+            }
+        ]
+    },
+    "requisitos_previos": [],
+    "siguiente_leccion": 2
+}

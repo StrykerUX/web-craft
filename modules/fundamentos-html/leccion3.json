@@ -1,0 +1,122 @@
+{
+    "id": 3,
+    "titulo": "Texto y Tipografía",
+    "descripcion": "Aprende a manejar etiquetas de texto y establecer una jerarquía de contenido efectiva.",
+    "duracion_estimada": 40,
+    "nivel": "Principiante",
+    "xp_recompensa": 75,
+    "contenido": {
+        "teoria": {
+            "introduccion": "El texto es el componente más fundamental de la mayoría de las páginas web. En esta lección, aprenderás cómo dar formato al texto utilizando HTML para crear contenido bien estructurado y fácil de leer.",
+            "secciones": [
+                {
+                    "titulo": "Encabezados (h1-h6)",
+                    "contenido": "Los encabezados son utilizados para estructurar el contenido de la página y establecer una jerarquía clara. HTML ofrece seis niveles de encabezados, desde `<h1>` (el más importante) hasta `<h6>` (el menos importante).\n\n```html\n<h1>Encabezado de nivel 1</h1>\n<h2>Encabezado de nivel 2</h2>\n<h3>Encabezado de nivel 3</h3>\n<h4>Encabezado de nivel 4</h4>\n<h5>Encabezado de nivel 5</h5>\n<h6>Encabezado de nivel 6</h6>\n```\n\n**Buenas prácticas para encabezados:**\n\n1. Utiliza `<h1>` solo una vez por página (generalmente para el título principal)\n2. Sigue un orden jerárquico: después de un `<h2>` no deberías usar un `<h4>` sin antes utilizar un `<h3>`\n3. No utilices encabezados solo para hacer que el texto sea más grande o en negrita\n4. Los encabezados son fundamentales para la accesibilidad y el SEO"
+                },
+                {
+                    "titulo": "Párrafos y saltos de línea",
+                    "contenido": "Los párrafos son bloques de texto definidos con la etiqueta `<p>`. HTML ignora automáticamente los saltos de línea y espacios múltiples en tu código, por lo que debes usar elementos HTML para controlar esto.\n\n```html\n<p>Este es un párrafo. HTML ignorará los múltiples espacios y saltos de línea en el código fuente.</p>\n\n<p>Este es otro párrafo que aparecerá separado del anterior.</p>\n```\n\nPara forzar un salto de línea dentro de un párrafo, puedes usar la etiqueta `<br>`:\n\n```html\n<p>Esta línea tendrá<br>un salto aquí.</p>\n```\n\nPara crear una línea horizontal divisoria, puedes usar la etiqueta `<hr>`:\n\n```html\n<p>Párrafo antes de la línea divisoria.</p>\n<hr>\n<p>Párrafo después de la línea divisoria.</p>\n```"
+                },
+                {
+                    "titulo": "Énfasis y texto importante",
+                    "contenido": "HTML proporciona varias formas de enfatizar o destacar partes de tu texto:\n\n**Texto en negrita:**\n\n```html\n<strong>Este texto es importante</strong> - Se usa para contenido con fuerte importancia\n<b>Este texto está en negrita</b> - Se usa principalmente para estilos visuales\n```\n\n**Texto en cursiva:**\n\n```html\n<em>Este texto está enfatizado</em> - Se usa para énfasis\n<i>Este texto está en cursiva</i> - Se usa principalmente para textos en voz alternativa o términos técnicos\n```\n\n**Otras opciones de formato:**\n\n```html\n<u>Texto subrayado</u> - Evitar usarlo para enlaces para no confundir\n<mark>Texto resaltado</mark> - Como un marcador fluorescente\n<del>Texto eliminado</del> - Muestra texto que ha sido eliminado\n<ins>Texto insertado</ins> - Muestra texto que ha sido añadido\n<sub>Subíndice</sub> - Como en H<sub>2</sub>O\n<sup>Superíndice</sup> - Como en x<sup>2</sup>\n<small>Texto pequeño</small> - Para letra pequeña o avisos legales\n<code>Código</code> - Para mostrar código\n```\n\n**Nota importante:** En HTML semántico moderno, debemos elegir estas etiquetas basándonos en su significado, no solo en su apariencia visual. Por ejemplo, usa `<strong>` para contenido importante, no solo porque quieras texto en negrita."
+                },
+                {
+                    "titulo": "Citas y bloques de texto",
+                    "contenido": "HTML ofrece formas específicas de marcar citas y bloques de texto especiales:\n\n**Citas en línea:**\n\n```html\n<p>Según el autor, <q>esta es una cita en línea</q> dentro de un párrafo.</p>\n```\n\n**Bloques de cita:**\n\n```html\n<blockquote>\n    <p>Esta es una cita de bloque que generalmente se muestra indentada.</p>\n    <cite>- Nombre del Autor</cite>\n</blockquote>\n```\n\n**Texto preformateado:**\nLa etiqueta `<pre>` preserva los espacios y saltos de línea, útil para mostrar código o poesía:\n\n```html\n<pre>\n    function hola() {\n        console.log(\"Hola mundo\");\n    }\n</pre>\n```\n\n**Direcciones:**\n\n```html\n<address>\n    Escrito por <a href=\"mailto:webmaster@example.com\">Jon Doe</a>.<br>\n    Visítanos en:<br>\n    Example.com<br>\n    Box 564, Ciudad<br>\n    España\n</address>\n```"
+                },
+                {
+                    "titulo": "Abreviaturas y definiciones",
+                    "contenido": "Para mejorar la accesibilidad y proporcionar información adicional:\n\n**Abreviaturas:**\n\n```html\n<p>La <abbr title=\"Organización Mundial de la Salud\">OMS</abbr> fue fundada en 1948.</p>\n```\n\n**Términos de definición:**\n\n```html\n<p>El <dfn title=\"HyperText Markup Language\">HTML</dfn> es el lenguaje estándar para crear páginas web.</p>\n```\n\nEsto proporciona información adicional al pasar el ratón por encima y ayuda a los lectores de pantalla y otros dispositivos de asistencia."
+                }
+            ]
+        },
+        "practica": {
+            "instrucciones": "Ahora vamos a practicar creando una página con diferentes elementos de texto para ver cómo se muestran en el navegador y entender mejor su uso.",
+            "pasos": [
+                {
+                    "paso": 1,
+                    "titulo": "Estructura básica y encabezados",
+                    "descripcion": "Comienza con la estructura básica e incluye diferentes niveles de encabezados:",
+                    "codigo": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Práctica de Texto en HTML</title>\n</head>\n<body>\n    <h1>Formatos de Texto en HTML</h1>\n    <h2>Explorando diferentes maneras de dar formato al texto</h2>\n    <h3>Por: Tu Nombre</h3>\n    \n    <h2>Sección 1: Encabezados</h2>\n    <p>Acabas de ver ejemplos de los encabezados h1, h2 y h3. Ahora veremos los restantes:</p>\n    \n    <h4>Este es un encabezado h4</h4>\n    <h5>Este es un encabezado h5</h5>\n    <h6>Este es un encabezado h6</h6>\n</body>\n</html>",
+                    "explicacion": "En este primer paso, hemos creado la estructura básica del documento y hemos incluido ejemplos de todos los niveles de encabezados (h1-h6). Nota cómo cada nivel es visualmente más pequeño que el anterior."
+                },
+                {
+                    "paso": 2,
+                    "titulo": "Párrafos y saltos de línea",
+                    "descripcion": "Vamos a añadir párrafos y controlar los saltos de línea:",
+                    "codigo": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Práctica de Texto en HTML</title>\n</head>\n<body>\n    <h1>Formatos de Texto en HTML</h1>\n    <h2>Explorando diferentes maneras de dar formato al texto</h2>\n    <h3>Por: Tu Nombre</h3>\n    \n    <h2>Sección 1: Encabezados</h2>\n    <p>Acabas de ver ejemplos de los encabezados h1, h2 y h3. Ahora veremos los restantes:</p>\n    \n    <h4>Este es un encabezado h4</h4>\n    <h5>Este es un encabezado h5</h5>\n    <h6>Este es un encabezado h6</h6>\n    \n    <h2>Sección 2: Párrafos y saltos</h2>\n    \n    <p>Este es un párrafo normal. HTML ignorará los múltiples espacios y los saltos de línea en el código fuente. Por eso necesitamos usar elementos HTML para controlar la estructura del texto.</p>\n    \n    <p>Este es un segundo párrafo. Observa que se crea un espacio vertical entre párrafos automáticamente.</p>\n    \n    <p>Este párrafo tiene un<br>salto de línea en medio<br>y otro aquí.</p>\n    \n    <hr>\n    \n    <p>Esta línea horizontal (hr) divide el contenido de manera visual.</p>\n</body>\n</html>",
+                    "explicacion": "Hemos añadido ejemplos de párrafos (p), saltos de línea (br) y una línea horizontal divisoria (hr). Los párrafos crean un espacio vertical automático, mientras que los saltos de línea permiten cambiar de línea sin crear un nuevo párrafo."
+                },
+                {
+                    "paso": 3,
+                    "titulo": "Énfasis y formatos de texto",
+                    "descripcion": "Ahora añadamos diferentes formatos de texto para énfasis:",
+                    "codigo": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Práctica de Texto en HTML</title>\n</head>\n<body>\n    <h1>Formatos de Texto en HTML</h1>\n    <h2>Explorando diferentes maneras de dar formato al texto</h2>\n    <h3>Por: Tu Nombre</h3>\n    \n    <h2>Sección 1: Encabezados</h2>\n    <p>Acabas de ver ejemplos de los encabezados h1, h2 y h3. Ahora veremos los restantes:</p>\n    \n    <h4>Este es un encabezado h4</h4>\n    <h5>Este es un encabezado h5</h5>\n    <h6>Este es un encabezado h6</h6>\n    \n    <h2>Sección 2: Párrafos y saltos</h2>\n    \n    <p>Este es un párrafo normal. HTML ignorará los múltiples espacios y los saltos de línea en el código fuente. Por eso necesitamos usar elementos HTML para controlar la estructura del texto.</p>\n    \n    <p>Este es un segundo párrafo. Observa que se crea un espacio vertical entre párrafos automáticamente.</p>\n    \n    <p>Este párrafo tiene un<br>salto de línea en medio<br>y otro aquí.</p>\n    \n    <hr>\n    \n    <p>Esta línea horizontal (hr) divide el contenido de manera visual.</p>\n    \n    <h2>Sección 3: Énfasis y formato</h2>\n    \n    <p>Podemos hacer que el texto sea <strong>importante</strong> o darle <em>énfasis</em>.</p>\n    \n    <p>También podemos tener texto en <b>negrita</b> y en <i>cursiva</i> por razones estilísticas.</p>\n    \n    <p>Otras opciones incluyen texto <u>subrayado</u>, <mark>resaltado</mark>, <del>tachado</del> y <ins>insertado</ins>.</p>\n    \n    <p>Para fórmulas científicas, podemos usar subíndices como en H<sub>2</sub>O y superíndices como en E=mc<sup>2</sup>.</p>\n    \n    <p><small>Este texto es más pequeño, ideal para notas al pie o disclaimers.</small></p>\n    \n    <p>Para mostrar código, usamos: <code>console.log(\"Hola Mundo\");</code></p>\n</body>\n</html>",
+                    "explicacion": "Hemos añadido ejemplos de varios tipos de formato de texto, incluyendo texto importante (strong), énfasis (em), negrita (b), cursiva (i), subrayado (u), resaltado (mark), tachado (del), insertado (ins), subíndice (sub), superíndice (sup), texto pequeño (small) y código (code)."
+                },
+                {
+                    "paso": 4,
+                    "titulo": "Citas y elementos especiales",
+                    "descripcion": "Finalmente, añadamos citas y otros elementos especiales de texto:",
+                    "codigo": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Práctica de Texto en HTML</title>\n</head>\n<body>\n    <h1>Formatos de Texto en HTML</h1>\n    <h2>Explorando diferentes maneras de dar formato al texto</h2>\n    <h3>Por: Tu Nombre</h3>\n    \n    <h2>Sección 1: Encabezados</h2>\n    <p>Acabas de ver ejemplos de los encabezados h1, h2 y h3. Ahora veremos los restantes:</p>\n    \n    <h4>Este es un encabezado h4</h4>\n    <h5>Este es un encabezado h5</h5>\n    <h6>Este es un encabezado h6</h6>\n    \n    <h2>Sección 2: Párrafos y saltos</h2>\n    \n    <p>Este es un párrafo normal. HTML ignorará los múltiples espacios y los saltos de línea en el código fuente. Por eso necesitamos usar elementos HTML para controlar la estructura del texto.</p>\n    \n    <p>Este es un segundo párrafo. Observa que se crea un espacio vertical entre párrafos automáticamente.</p>\n    \n    <p>Este párrafo tiene un<br>salto de línea en medio<br>y otro aquí.</p>\n    \n    <hr>\n    \n    <p>Esta línea horizontal (hr) divide el contenido de manera visual.</p>\n    \n    <h2>Sección 3: Énfasis y formato</h2>\n    \n    <p>Podemos hacer que el texto sea <strong>importante</strong> o darle <em>énfasis</em>.</p>\n    \n    <p>También podemos tener texto en <b>negrita</b> y en <i>cursiva</i> por razones estilísticas.</p>\n    \n    <p>Otras opciones incluyen texto <u>subrayado</u>, <mark>resaltado</mark>, <del>tachado</del> y <ins>insertado</ins>.</p>\n    \n    <p>Para fórmulas científicas, podemos usar subíndices como en H<sub>2</sub>O y superíndices como en E=mc<sup>2</sup>.</p>\n    \n    <p><small>Este texto es más pequeño, ideal para notas al pie o disclaimers.</small></p>\n    \n    <p>Para mostrar código, usamos: <code>console.log(\"Hola Mundo\");</code></p>\n    \n    <h2>Sección 4: Citas y elementos especiales</h2>\n    \n    <p>Según el autor, <q>las citas en línea se muestran entre comillas</q> automáticamente.</p>\n    \n    <blockquote>\n        <p>Las citas de bloque generalmente se muestran con un margen izquierdo y a veces con un estilo diferente.</p>\n        <cite>- Albert Einstein</cite>\n    </blockquote>\n    \n    <p>El elemento pre conserva todos los espacios y saltos de línea:</p>\n    <pre>\n    function saludar() {
+        console.log(\"Hola\");
+        console.log(\"Mundo\");
+    }
+    </pre>\n    \n    <p>Podemos usar abreviaturas como <abbr title=\"HyperText Markup Language\">HTML</abbr> para proporcionar el significado completo.</p>\n    \n    <address>\n        Escrito por: Tu Nombre<br>\n        Visita nuestro sitio en: example.com<br>\n        Ciudad, País\n    </address>\n</body>\n</html>",
+                    "explicacion": "Hemos completado nuestra página con ejemplos de citas en línea (q), bloques de cita (blockquote) con atribución (cite), texto preformateado (pre), abreviaturas (abbr) con tooltip, y dirección (address)."
+                }
+            ]
+        },
+        "ejercicio": {
+            "titulo": "Artículo de Blog Estructurado",
+            "descripcion": "Aplica lo aprendido creando un artículo de blog bien estructurado con diversos elementos de texto.",
+            "instrucciones": "Crea un artículo de blog sobre un tema de tu interés (tecnología, viajes, cocina, deportes, etc.) que incluya:\n\n1. Una estructura jerárquica clara con encabezados (h1 para el título, h2 para secciones principales, h3 para subsecciones)\n2. Al menos 3 párrafos de contenido\n3. Uso de negrita y cursiva para enfatizar partes importantes\n4. Al menos una cita de algún experto usando blockquote\n5. Una lista (ordenada o no ordenada)\n6. Al menos un ejemplo de cada uno de estos elementos: mark, abbr, code\n7. Un pie de artículo con la información del autor usando address\n\nRecuerda utilizar los elementos HTML correctos basándote en su significado, no solo en su apariencia.",
+            "solucion": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>El Futuro de la Inteligencia Artificial</title>\n</head>\n<body>\n    <article>\n        <header>\n            <h1>El Futuro de la Inteligencia Artificial</h1>\n            <p>Publicado el 7 de mayo, 2025</p>\n        </header>\n        \n        <section>\n            <h2>Introducción</h2>\n            <p>La <abbr title=\"Inteligencia Artificial\">IA</abbr> está transformando rápidamente nuestra sociedad, cambiando la forma en que trabajamos, nos comunicamos e incluso vivimos. En este artículo exploraremos las tendencias actuales y lo que podemos esperar en los próximos años en este fascinante campo.</p>\n            \n            <p>Los avances recientes en <strong>aprendizaje profundo</strong> y <strong>redes neuronales</strong> han permitido crear sistemas capaces de realizar tareas que antes parecían exclusivas de los humanos. Desde la <mark>traducción de idiomas en tiempo real</mark> hasta el <mark>diagnóstico médico avanzado</mark>, la IA está demostrando su potencial en casi todas las industrias.</p>\n        </section>\n        \n        <section>\n            <h2>Aplicaciones Actuales</h2>\n            \n            <h3>Asistentes Virtuales</h3>\n            <p>Los asistentes virtuales como Siri, Alexa y Google Assistant están cada vez más integrados en nuestra vida diaria. Según un estudio reciente, más del 60% de los hogares en países desarrollados tendrán algún tipo de asistente virtual para 2026.</p>\n            \n            <h3>Vehículos Autónomos</h3>\n            <p>La conducción autónoma está avanzando rápidamente. Las empresas como Tesla, Waymo y GM están invirtiendo miles de millones en esta tecnología que promete <em>revolucionar el transporte</em> y <em>reducir drásticamente los accidentes de tráfico</em>.</p>\n        </section>\n        \n        <section>\n            <h2>Desafíos Éticos</h2>\n            <p>A pesar del entusiasmo, la IA plantea importantes desafíos éticos que debemos abordar:</p>\n            \n            <ul>\n                <li>Privacidad y vigilancia</li>\n                <li>Sesgos algorítmicos</li>\n                <li>Desplazamiento laboral</li>\n                <li>Responsabilidad en decisiones automatizadas</li>\n                <li>Superinteligencia y control humano</li>\n            </ul>\n            \n            <blockquote>\n                <p>No deberíamos tener miedo a la inteligencia artificial. En su lugar, deberíamos preocuparnos por lo que los humanos hacen con ella. La tecnología es neutral; depende de nosotros cómo la usamos.</p>\n                <cite>- Dra. Fei-Fei Li, Profesora de Stanford</cite>\n            </blockquote>\n        </section>\n        \n        <section>\n            <h2>Un Vistazo al Código</h2>\n            <p>Para aquellos interesados en la programación de IA, aquí hay un ejemplo simple de cómo crear una red neuronal básica con Python y TensorFlow:</p>\n            \n            <pre><code>import tensorflow as tf\n\nmodel = tf.keras.Sequential([\n    tf.keras.layers.Dense(128, activation='relu'),\n    tf.keras.layers.Dense(64, activation='relu'),\n    tf.keras.layers.Dense(10, activation='softmax')\n])</code></pre>\n        </section>\n        \n        <footer>\n            <h3>Sobre el Autor</h3>\n            <address>\n                Escrito por: Tu Nombre<br>\n                Especialista en Tecnología<br>\n                <a href=\"mailto:tu@email.com\">tu@email.com</a><br>\n                <a href=\"https://twitter.com/tuusuario\">@tuusuario</a>\n            </address>\n        </footer>\n    </article>\n</body>\n</html>",
+            "pistas": [
+                "Comienza con un único encabezado h1 para el título principal",
+                "Divide tu contenido en secciones lógicas con encabezados h2",
+                "Usa strong para enfatizar información importante, no solo para poner texto en negrita",
+                "Las citas de expertos deben ir dentro de un blockquote con una atribución usando cite",
+                "Usa address para la información de contacto, no solo para direcciones físicas",
+                "Envuelve todo el contenido en un elemento article para indicar que es un contenido independiente"
+            ],
+            "criterios_evaluacion": [
+                "Uso correcto de la jerarquía de encabezados (h1, h2, h3) para estructurar el contenido",
+                "Al menos 3 párrafos de contenido relevante",
+                "Uso apropiado de elementos semánticos (strong, em) para énfasis",
+                "Implementación correcta de blockquote con citación",
+                "Presencia de una lista bien formada (ul o ol con elementos li)",
+                "Uso correcto de mark, abbr y code según su propósito semántico",
+                "Información de autor correctamente estructurada con address"
+            ]
+        },
+        "html_template": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Mi Artículo de Blog</title>\n</head>\n<body>\n    <article>\n        <!-- Aquí va el título principal (h1) -->\n        \n        <!-- Añade secciones con encabezados (h2, h3) y párrafos -->\n        \n        <!-- No olvides incluir una cita, listas y elementos especiales -->\n        \n        <!-- Termina con la información del autor -->\n        \n    </article>\n</body>\n</html>",
+        "css_template": "/* CSS básico para mejorar la apariencia del artículo */\nbody {\n    font-family: Georgia, serif;\n    line-height: 1.6;\n    color: #333;\n    max-width: 800px;\n    margin: 0 auto;\n    padding: 20px;\n}\n\nh1 {\n    color: #2c3e50;\n    font-size: 2.5em;\n    margin-bottom: 0.5em;\n}\n\nh2 {\n    color: #3498db;\n    font-size: 1.8em;\n    margin-top: 1.5em;\n}\n\nh3 {\n    color: #2980b9;\n    font-size: 1.3em;\n}\n\nblockquote {\n    border-left: 5px solid #3498db;\n    padding: 10px 20px;\n    margin: 20px 0;\n    background-color: #f8f9fa;\n    font-style: italic;\n}\n\nblockquote cite {\n    display: block;\n    font-style: normal;\n    font-weight: bold;\n    margin-top: 10px;\n}\n\ncode {\n    font-family: 'Courier New', monospace;\n    background-color: #f8f9fa;\n    padding: 2px 4px;\n    border-radius: 3px;\n}\n\npre {\n    background-color: #f8f9fa;\n    padding: 10px;\n    border-radius: 5px;\n    overflow-x: auto;\n}\n\nmark {\n    background-color: #ffffcc;\n    padding: 0 2px;\n}\n\naddress {\n    margin-top: 20px;\n    padding: 10px;\n    background-color: #f8f9fa;\n    border-radius: 5px;\n    font-style: normal;\n}\n\nul, ol {\n    margin: 15px 0;\n    padding-left: 30px;\n}\n\nli {\n    margin-bottom: 5px;\n}",
+        "js_template": "// No se requiere JavaScript para este ejercicio",
+        "recursos_adicionales": [
+            {
+                "titulo": "MDN Web Docs - Texto en HTML",
+                "url": "https://developer.mozilla.org/es/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals",
+                "tipo": "documentacion"
+            },
+            {
+                "titulo": "HTML5 Doctor - Cuando usar las etiquetas section y article",
+                "url": "http://html5doctor.com/the-article-element/",
+                "tipo": "articulo"
+            },
+            {
+                "titulo": "Guía de HTML Semántico",
+                "url": "https://css-tricks.com/why-how-and-when-to-use-semantic-html-and-aria/",
+                "tipo": "guia"
+            },
+            {
+                "titulo": "Buenas Prácticas para la Estructura de Texto Web",
+                "url": "https://www.smashingmagazine.com/2020/07/css-techniques-legibility/",
+                "tipo": "articulo"
+            }
+        ]
+    },
+    "requisitos_previos": [1, 2],
+    "siguiente_leccion": 4
+}
