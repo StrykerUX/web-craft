@@ -6,6 +6,9 @@
  * Gestiona la carga de la interfaz principal y el enrutamiento básico.
  */
 
+// Iniciar buffer de salida para evitar errores de "headers already sent"
+ob_start();
+
 // Definir constante para permitir acceso a los archivos de configuración
 define('WEBCRAFT', true);
 
@@ -164,3 +167,7 @@ if ($page === 'home') {
     <?php endif; ?>
 </body>
 </html>
+<?php
+// Liberar el buffer de salida al final del script
+ob_end_flush();
+?>

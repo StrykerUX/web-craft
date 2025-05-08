@@ -14,13 +14,11 @@ if (!defined('WEBCRAFT')) {
     die('Acceso directo no permitido');
 }
 
-// Iniciar buffer de salida para prevenir errores de headers
-ob_start();
-
 // Verificar si ya está autenticado, redirigir a dashboard
 if (isset($_SESSION['user_id'])) {
-    header('Location: index.php?page=dashboard');
-    exit;
+    // Usamos JavaScript para redirigir en lugar de header()
+    echo "<script>window.location.href = 'index.php?page=dashboard';</script>";
+    return; // Terminamos el script pero no con exit para evitar problemas con el buffer
 }
 
 // Variables para el formulario
@@ -58,16 +56,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                     // Inicio de sesión exitoso
                     loginUser($result['user'], $remember);
                     
-                    // Redirigir según corresponda
+                    // Redirigir según corresponda usando JavaScript
                     $redirect = filter_input(INPUT_GET, 'redirect', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                     $allowedRedirects = ['dashboard', 'profile', 'modules', 'lessons', 'challenges', 'editor'];
                     
                     if (!empty($redirect) && in_array($redirect, $allowedRedirects)) {
-                        header('Location: index.php?page=' . $redirect);
+                        echo "<script>window.location.href = 'index.php?page=" . $redirect . "';</script>";
                     } else {
-                        header('Location: index.php?page=dashboard');
+                        echo "<script>window.location.href = 'index.php?page=dashboard';</script>";
                     }
-                    exit;
+                    return; // Terminamos el script pero no con exit
                 } else {
                     // Inicio de sesión fallido
                     $error = $result['message'];
@@ -77,6 +75,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
         }
     }
 }
-
-// Limpia el buffer y permite que el script continúe
-ob_end_clean();
