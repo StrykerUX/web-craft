@@ -14,6 +14,9 @@ if (!defined('WEBCRAFT')) {
     die('Acceso directo no permitido');
 }
 
+// Incluir utilidades de seguridad
+require_once 'includes/utils/security.php';
+
 // Verificar si ya está autenticado, redirigir a dashboard
 if (isset($_SESSION['user_id'])) {
     // Usamos JavaScript para redirigir en lugar de header()
@@ -34,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     
     // Verificar token CSRF si está habilitado
     if (isset($_POST['csrf_token'])) {
-        if (!verifyCSRFToken($_POST['csrf_token'])) {
+        if (!validateCSRFToken($_POST['csrf_token'], 'login')) {
             $error = 'Error de seguridad. Por favor, intenta nuevamente.';
         }
     }
@@ -45,32 +48,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
         if (empty($username) || empty($password)) {
             $error = 'Por favor, ingresa tu usuario y contraseña.';
         } else {
-            // Verificar si la cuenta está bloqueada por demasiados intentos
-            if (isAccountLocked($username)) {
-                $error = 'Demasiados intentos de inicio de sesión. Por favor, intenta nuevamente más tarde.';
-            } else {
-                // Autenticar usuario
-                $result = authenticateUser($username, $password);
+            // Intentar autenticar al usuario
+            $result = loginUser($username, $password);
+            
+            if ($result['success']) {
+                // Inicio de sesión exitoso
                 
-                if ($result['success']) {
-                    // Inicio de sesión exitoso
-                    loginUser($result['user'], $remember);
-                    
-                    // Redirigir según corresponda usando JavaScript
-                    $redirect = filter_input(INPUT_GET, 'redirect', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                    $allowedRedirects = ['dashboard', 'profile', 'modules', 'lessons', 'challenges', 'editor'];
-                    
-                    if (!empty($redirect) && in_array($redirect, $allowedRedirects)) {
-                        echo "<script>window.location.href = 'index.php?page=" . $redirect . "';</script>";
-                    } else {
-                        echo "<script>window.location.href = 'index.php?page=dashboard';</script>";
-                    }
-                    return; // Terminamos el script pero no con exit
-                } else {
-                    // Inicio de sesión fallido
-                    $error = $result['message'];
-                    registerFailedLoginAttempt($username);
+                // Si está marcado "recordarme", establecer cookie
+                if ($remember) {
+                    $expiry = time() + 30 * 24 * 60 * 60; // 30 días
+                    setcookie('remember_token', $result['remember_token'], $expiry, '/');
                 }
+                
+                // Redirigir según corresponda usando JavaScript
+                $redirect = filter_input(INPUT_GET, 'redirect', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $allowedRedirects = ['dashboard', 'profile', 'modules', 'lessons', 'challenges', 'editor'];
+                
+                if (!empty($redirect) && in_array($redirect, $allowedRedirects)) {
+                    echo "<script>window.location.href = 'index.php?page=" . $redirect . "';</script>";
+                } else {
+                    echo "<script>window.location.href = 'index.php?page=dashboard';</script>";
+                }
+                return; // Terminamos el script pero no con exit
+            } else {
+                // Inicio de sesión fallido
+                $error = $result['message'];
             }
         }
     }

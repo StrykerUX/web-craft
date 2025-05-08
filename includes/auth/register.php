@@ -1,9 +1,9 @@
 <?php
 /**
- * Procesamiento de registro de usuarios para WebCraft Academy
+ * Procesamiento de registro para WebCraft Academy
  * 
  * Este archivo maneja el procesamiento del formulario de registro
- * y la creación de nuevos usuarios.
+ * y la creación de nuevas cuentas de usuario.
  * 
  * @package WebCraft
  * @subpackage Authentication
@@ -14,13 +14,9 @@ if (!defined('WEBCRAFT')) {
     die('Acceso directo no permitido');
 }
 
-// Iniciar buffer de salida para prevenir errores de headers
-ob_start();
-
-// Verificar si ya está autenticado, redirigir a dashboard
-if (isset($_SESSION['user_id'])) {
-    header('Location: index.php?page=dashboard');
-    exit;
+// Incluir utilidades de seguridad si no están incluidas aún
+if (!function_exists('generateCSRFToken')) {
+    require_once 'includes/utils/security.php';
 }
 
 // Variables para el formulario
@@ -33,59 +29,65 @@ $full_name = '';
 // Procesar formulario si es enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     // Obtener y sanitizar datos
-    $username = htmlspecialchars($_POST['username'] ?? '', ENT_QUOTES, 'UTF-8');
+    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-    $email = htmlspecialchars($email ?? '', ENT_QUOTES, 'UTF-8');
+    $full_name = filter_input(INPUT_POST, 'full_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $password = $_POST['password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
-    $full_name = htmlspecialchars($_POST['full_name'] ?? '', ENT_QUOTES, 'UTF-8');
     $terms = isset($_POST['terms']) && $_POST['terms'] == '1';
     
-    // Verificar token CSRF si está habilitado
+    // Verificar token CSRF
     if (isset($_POST['csrf_token'])) {
-        if (!verifyCSRFToken($_POST['csrf_token'])) {
+        if (!validateCSRFToken($_POST['csrf_token'], 'register')) {
             $error = 'Error de seguridad. Por favor, intenta nuevamente.';
         }
     }
     
-    // Verificar aceptación de términos
-    if (empty($error) && !$terms) {
-        $error = 'Debes aceptar los Términos y Condiciones y la Política de Privacidad.';
-    }
-    
-    // Verificar que las contraseñas coincidan
-    if (empty($error) && $password !== $confirm_password) {
-        $error = 'Las contraseñas no coinciden.';
-    }
-    
     // Continuar solo si no hay errores
     if (empty($error)) {
-        // Registrar usuario
-        $result = registerUser($username, $email, $password, $full_name);
-        
-        if ($result['success']) {
-            // Registro exitoso
-            // Iniciar sesión automáticamente
-            $_SESSION['user_id'] = $result['user_id'];
-            $_SESSION['username'] = $result['username'];
-            $_SESSION['developer_level'] = $result['developer_level'];
-            
-            // Redirigir según corresponda
-            $redirect = filter_input(INPUT_GET, 'redirect', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $allowedRedirects = ['dashboard', 'profile', 'modules', 'lessons', 'challenges', 'editor'];
-            
-            if (!empty($redirect) && in_array($redirect, $allowedRedirects)) {
-                header('Location: index.php?page=' . $redirect);
-            } else {
-                header('Location: index.php?page=dashboard');
-            }
-            exit;
+        // Validar datos básicos
+        if (empty($username) || empty($email) || empty($password)) {
+            $error = 'Por favor, completa todos los campos obligatorios.';
+        } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = 'Por favor, ingresa un correo electrónico válido.';
+        } else if (strlen($username) < 3 || strlen($username) > 50) {
+            $error = 'El nombre de usuario debe tener entre 3 y 50 caracteres.';
+        } else if (!preg_match('/^[a-zA-Z0-9_]+$/', $username)) {
+            $error = 'El nombre de usuario solo puede contener letras, números y guiones bajos.';
+        } else if (strlen($password) < 8) {
+            $error = 'La contraseña debe tener al menos 8 caracteres.';
+        } else if ($password !== $confirm_password) {
+            $error = 'Las contraseñas no coinciden. Por favor, inténtalo de nuevo.';
+        } else if (!$terms) {
+            $error = 'Debes aceptar los términos y condiciones.';
         } else {
-            // Error en el registro
-            $error = $result['message'];
+            // Si el nombre completo está vacío, usar el nombre de usuario
+            if (empty($full_name)) {
+                $full_name = $username;
+            }
+            
+            // Intentar registrar al usuario
+            $result = registerUser($username, $email, $password, $full_name);
+            
+            if ($result['success']) {
+                // Registro exitoso
+                $success = $result['message'];
+                
+                // Limpiar campos para prevenir reenvío de formulario
+                $username = '';
+                $email = '';
+                $full_name = '';
+                
+                // Redirigir a login si no hubo errores (usando JavaScript)
+                echo "<script>
+                    setTimeout(function() {
+                        window.location.href = 'index.php?page=login" . (isset($_GET['redirect']) ? '&redirect=' . htmlspecialchars($_GET['redirect']) : '') . "';
+                    }, 3000);
+                </script>";
+            } else {
+                // Registro fallido
+                $error = $result['message'];
+            }
         }
     }
 }
-
-// Limpia el buffer y permite que el script continúe
-ob_end_clean();

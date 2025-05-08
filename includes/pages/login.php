@@ -4,11 +4,14 @@ if (!defined('WEBCRAFT')) {
     die('Acceso directo no permitido');
 }
 
+// Incluir utilidades de seguridad
+require_once 'includes/utils/security.php';
+
 // Incluir procesamiento de login
 require_once 'includes/auth/login.php';
 
-// Generar token CSRF
-$csrf_token = generateCSRFToken();
+// Generar token CSRF para el formulario de login
+$csrf_token = generateCSRFToken('login');
 ?>
 
 <div class="login-container">
@@ -33,7 +36,7 @@ $csrf_token = generateCSRFToken();
                     <label for="username">Usuario o Correo Electrónico</label>
                     <div class="input-icon-wrapper">
                         <i class="fas fa-user"></i>
-                        <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($username); ?>" required autocomplete="username">
+                        <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($username ?? ''); ?>" required autocomplete="username">
                     </div>
                 </div>
                 
@@ -113,3 +116,27 @@ $csrf_token = generateCSRFToken();
         </div>
     </div>
 </div>
+
+<script>
+// Script para mostrar/ocultar contraseña
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleButtons = document.querySelectorAll('.password-toggle');
+    
+    toggleButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            const icon = this.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    });
+});
+</script>

@@ -4,11 +4,14 @@ if (!defined('WEBCRAFT')) {
     die('Acceso directo no permitido');
 }
 
+// Incluir utilidades de seguridad
+require_once 'includes/utils/security.php';
+
 // Incluir procesamiento de registro
 require_once 'includes/auth/register.php';
 
-// Generar token CSRF
-$csrf_token = generateCSRFToken();
+// Generar token CSRF para el formulario de registro
+$csrf_token = generateCSRFToken('register');
 ?>
 
 <div class="register-container">
@@ -39,7 +42,7 @@ $csrf_token = generateCSRFToken();
                     <label for="username">Nombre de Usuario <span class="required">*</span></label>
                     <div class="input-icon-wrapper">
                         <i class="fas fa-user"></i>
-                        <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($username); ?>" required autocomplete="username" pattern="[a-zA-Z0-9_]+" minlength="3" maxlength="50">
+                        <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($username ?? ''); ?>" required autocomplete="username" pattern="[a-zA-Z0-9_]+" minlength="3" maxlength="50">
                     </div>
                     <small class="form-text">Solo letras, números y guiones bajos. Entre 3 y 50 caracteres.</small>
                 </div>
@@ -48,7 +51,7 @@ $csrf_token = generateCSRFToken();
                     <label for="email">Correo Electrónico <span class="required">*</span></label>
                     <div class="input-icon-wrapper">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required autocomplete="email">
+                        <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email ?? ''); ?>" required autocomplete="email">
                     </div>
                 </div>
                 
@@ -56,7 +59,7 @@ $csrf_token = generateCSRFToken();
                     <label for="full_name">Nombre Completo</label>
                     <div class="input-icon-wrapper">
                         <i class="fas fa-id-card"></i>
-                        <input type="text" id="full_name" name="full_name" value="<?php echo htmlspecialchars($full_name); ?>" autocomplete="name">
+                        <input type="text" id="full_name" name="full_name" value="<?php echo htmlspecialchars($full_name ?? ''); ?>" autocomplete="name">
                     </div>
                     <small class="form-text">Opcional. Si lo dejas vacío, se usará tu nombre de usuario.</small>
                 </div>
@@ -162,3 +165,27 @@ $csrf_token = generateCSRFToken();
         </div>
     </div>
 </div>
+
+<script>
+// Script para mostrar/ocultar contraseña
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleButtons = document.querySelectorAll('.password-toggle');
+    
+    toggleButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            const icon = this.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    });
+});
+</script>
