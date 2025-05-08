@@ -6,8 +6,10 @@
  * y lecciones de la plataforma WebCraft Academy.
  */
 
-// Definir constante para permitir acceso a los archivos de configuración
-define('WEBCRAFT', true);
+// Definir constante para permitir acceso a los archivos de configuración solo si no está ya definida
+if (!defined('WEBCRAFT')) {
+    define('WEBCRAFT', true);
+}
 
 // Incluir archivo de configuración si aún no está incluido
 if (!defined('BASE_PATH')) {
