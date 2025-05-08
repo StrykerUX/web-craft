@@ -1,148 +1,122 @@
 <?php
 /**
- * API para guardar proyectos de usuarios
+ * WebCraft Academy - Endpoint AJAX para guardar proyectos
  * 
- * Este archivo procesa las solicitudes AJAX para guardar o actualizar
- * proyectos creados en el editor de código.
+ * Este archivo maneja las solicitudes para guardar proyectos de los usuarios
+ * en la base de datos, tanto para crear nuevos proyectos como para actualizar existentes.
  */
 
 // Definir constante para permitir acceso a los archivos de configuración
 define('WEBCRAFT', true);
 
-// Incluir archivo de configuración
+// Incluir archivo de configuración global
 require_once '../../config.php';
 
 // Verificar autenticación
 require_once '../auth/auth.php';
 if (!isUserLoggedIn()) {
     header('Content-Type: application/json');
-    echo json_encode([
-        'success' => false,
-        'message' => 'No autorizado. Debe iniciar sesión para guardar proyectos.'
-    ]);
+    echo json_encode(['success' => false, 'message' => 'Usuario no autenticado']);
     exit;
 }
 
-// Verificar método de solicitud
+// Asegurarse de que la solicitud sea POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Content-Type: application/json');
-    echo json_encode([
-        'success' => false,
-        'message' => 'Método no permitido. Use POST para esta solicitud.'
-    ]);
+    echo json_encode(['success' => false, 'message' => 'Método no permitido']);
     exit;
 }
 
-// Obtener datos de la solicitud
-$requestData = json_decode(file_get_contents('php://input'), true);
-if (!$requestData) {
+// Obtener datos JSON del cuerpo de la solicitud
+$json = file_get_contents('php://input');
+$data = json_decode($json, true);
+
+// Verificar que los datos sean válidos
+if (!$data || !isset($data['title'])) {
     header('Content-Type: application/json');
-    echo json_encode([
-        'success' => false,
-        'message' => 'Datos de solicitud inválidos.'
-    ]);
-    exit;
-}
-
-// Validar datos requeridos
-$requiredFields = ['title', 'html_content', 'css_content', 'js_content'];
-foreach ($requiredFields as $field) {
-    if (!isset($requestData[$field])) {
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => false,
-            'message' => "El campo '{$field}' es requerido."
-        ]);
-        exit;
-    }
-}
-
-// Obtener datos del proyecto
-$title = trim($requestData['title']);
-$description = isset($requestData['description']) ? trim($requestData['description']) : '';
-$htmlContent = $requestData['html_content'];
-$cssContent = $requestData['css_content'];
-$jsContent = $requestData['js_content'];
-$isPublic = isset($requestData['is_public']) ? (bool)$requestData['is_public'] : false;
-$projectId = isset($requestData['project_id']) ? (int)$requestData['project_id'] : null;
-
-// Validar título
-if (empty($title)) {
-    header('Content-Type: application/json');
-    echo json_encode([
-        'success' => false,
-        'message' => 'El título del proyecto no puede estar vacío.'
-    ]);
+    echo json_encode(['success' => false, 'message' => 'Datos incompletos']);
     exit;
 }
 
 try {
     $db = getDbConnection();
     
-    // Verificar si es una actualización o una inserción
+    // Preparar los datos para la inserción/actualización
+    $userId = $_SESSION['user_id'];
+    $title = $data['title'];
+    $description = isset($data['description']) ? $data['description'] : '';
+    $htmlContent = isset($data['html_content']) ? $data['html_content'] : '';
+    $cssContent = isset($data['css_content']) ? $data['css_content'] : '';
+    $jsContent = isset($data['js_content']) ? $data['js_content'] : '';
+    $isPublic = isset($data['is_public']) ? (bool)$data['is_public'] : false;
+    $projectId = isset($data['project_id']) && $data['project_id'] > 0 ? (int)$data['project_id'] : null;
+    
     if ($projectId) {
-        // Verificar que el proyecto pertenezca al usuario actual
+        // Actualizar proyecto existente
+        // Primero verificar que el proyecto pertenezca al usuario
         $stmt = $db->prepare("SELECT user_id FROM projects WHERE project_id = ?");
         $stmt->execute([$projectId]);
         $project = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        if (!$project || $project['user_id'] != $_SESSION['user_id']) {
+        if (!$project || $project['user_id'] != $userId) {
             header('Content-Type: application/json');
-            echo json_encode([
-                'success' => false,
-                'message' => 'No tiene permiso para editar este proyecto.'
-            ]);
+            echo json_encode(['success' => false, 'message' => 'No tienes permiso para modificar este proyecto']);
             exit;
         }
         
-        // Actualizar proyecto existente
+        // Actualizar el proyecto
         $stmt = $db->prepare("
-            UPDATE projects 
-            SET title = ?, description = ?, html_content = ?, css_content = ?, js_content = ?, 
-                is_public = ?, last_modified = NOW() 
+            UPDATE projects SET 
+                title = ?, 
+                description = ?, 
+                html_content = ?,
+                css_content = ?,
+                js_content = ?,
+                is_public = ?,
+                last_modified = CURRENT_TIMESTAMP
             WHERE project_id = ?
         ");
         
         $stmt->execute([
-            $title, $description, $htmlContent, $cssContent, $jsContent, 
-            $isPublic, $projectId
+            $title,
+            $description,
+            $htmlContent,
+            $cssContent,
+            $jsContent,
+            $isPublic ? 1 : 0,
+            $projectId
         ]);
         
         header('Content-Type: application/json');
-        echo json_encode([
-            'success' => true,
-            'message' => 'Proyecto actualizado correctamente.',
-            'project_id' => $projectId
-        ]);
+        echo json_encode(['success' => true, 'message' => 'Proyecto actualizado correctamente', 'project_id' => $projectId]);
     } else {
         // Crear nuevo proyecto
         $stmt = $db->prepare("
-            INSERT INTO projects (user_id, title, description, html_content, css_content, js_content, 
-                is_public, creation_date, last_modified) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
+            INSERT INTO projects (
+                user_id, title, description, html_content, css_content, js_content, 
+                creation_date, last_modified, is_public
+            ) VALUES (
+                ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, ?
+            )
         ");
         
         $stmt->execute([
-            $_SESSION['user_id'], $title, $description, $htmlContent, $cssContent, $jsContent, 
-            $isPublic
+            $userId,
+            $title,
+            $description,
+            $htmlContent,
+            $cssContent,
+            $jsContent,
+            $isPublic ? 1 : 0
         ]);
         
         $newProjectId = $db->lastInsertId();
         
         header('Content-Type: application/json');
-        echo json_encode([
-            'success' => true,
-            'message' => 'Proyecto guardado correctamente.',
-            'project_id' => $newProjectId
-        ]);
+        echo json_encode(['success' => true, 'message' => 'Proyecto creado correctamente', 'project_id' => $newProjectId]);
     }
-    
 } catch (PDOException $e) {
-    // Error en la base de datos
+    // Error de base de datos
     header('Content-Type: application/json');
-    echo json_encode([
-        'success' => false,
-        'message' => DEV_MODE ? 'Error de base de datos: ' . $e->getMessage() : 'Error al guardar el proyecto. Intente nuevamente más tarde.'
-    ]);
-    exit;
+    echo json_encode(['success' => false, 'message' => 'Error de base de datos: ' . $e->getMessage()]);
 }

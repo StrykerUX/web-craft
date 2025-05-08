@@ -130,18 +130,14 @@ if ($editorMode === 'lesson' && $lessonId) {
                 <i class="fas fa-download"></i> Descargar
             </button>
             
-            <!-- Seleccionador de tema del editor -->
-            <div class="theme-selector">
-                <label for="editorTheme">Tema:</label>
-                <select id="editorTheme">
-                    <option value="monokai">Monokai (Oscuro)</option>
-                    <option value="eclipse">Eclipse (Claro)</option>
-                </select>
-            </div>
+            <!-- Botón para actualizar vista previa -->
+            <button id="runProject" class="btn-primary">
+                <i class="fas fa-play"></i> Ejecutar
+            </button>
             
-            <!-- Botón de pantalla completa -->
-            <button id="toggleFullscreen" class="btn-icon">
-                <i class="fas fa-expand"></i>
+            <!-- Botón para cambiar tema (claro/oscuro) -->
+            <button id="toggleTheme" class="btn-icon">
+                <i class="fas fa-moon"></i>
             </button>
             
             <!-- Botón de ayuda -->
@@ -171,10 +167,22 @@ if ($editorMode === 'lesson' && $lessonId) {
             <div class="sidebar-section">
                 <h3>Archivos</h3>
                 <ul class="file-list">
-                    <li class="file active" data-file="html"><i class="fab fa-html5"></i> index.html</li>
-                    <li class="file" data-file="css"><i class="fab fa-css3-alt"></i> styles.css</li>
-                    <li class="file" data-file="js"><i class="fab fa-js"></i> script.js</li>
+                    <li class="file-item active" data-file="html"><i class="fab fa-html5"></i> index.html</li>
+                    <li class="file-item" data-file="css"><i class="fab fa-css3-alt"></i> styles.css</li>
+                    <li class="file-item" data-file="js"><i class="fab fa-js"></i> script.js</li>
                 </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3>Opciones</h3>
+                <div class="options-list">
+                    <div class="option-item">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="autoRefresh" checked>
+                            <span>Actualización automática</span>
+                        </label>
+                    </div>
+                </div>
             </div>
             
             <?php if ($editorMode === 'lesson' && $lessonId): ?>
@@ -184,7 +192,7 @@ if ($editorMode === 'lesson' && $lessonId) {
                     <!-- Las instrucciones de la lección se cargarán aquí mediante AJAX -->
                     <p>Cargando instrucciones...</p>
                 </div>
-                <button id="checkExercise" class="btn-success btn-full">
+                <button id="checkLesson" class="btn-success btn-full">
                     <i class="fas fa-check-circle"></i> Verificar Ejercicio
                 </button>
             </div>
@@ -208,93 +216,45 @@ if ($editorMode === 'lesson' && $lessonId) {
         
         <!-- Área principal del editor -->
         <div class="editor-main">
+            <!-- Pestañas para los diferentes editores -->
             <div class="editor-tabs">
                 <div class="tab-buttons">
-                    <button class="tab-btn active" data-tab="editor">Editor</button>
-                    <button class="tab-btn" data-tab="preview">Vista Previa</button>
-                    <button class="tab-btn" data-tab="split">Vista Dividida</button>
+                    <button id="refreshPreview" class="btn-icon">
+                        <i class="fas fa-sync-alt"></i> Actualizar Vista
+                    </button>
                 </div>
                 
-                <div class="editor-controls">
-                    <button id="refreshPreview" class="btn-icon" title="Actualizar vista previa">
-                        <i class="fas fa-sync-alt"></i>
+                <div class="device-buttons">
+                    <button class="btn-icon device-btn" data-device="mobile" title="Vista móvil">
+                        <i class="fas fa-mobile-alt"></i>
                     </button>
-                    <div class="editor-resize-controls">
-                        <button class="btn-icon resize-control" data-size="mobile" title="Vista móvil">
-                            <i class="fas fa-mobile-alt"></i>
-                        </button>
-                        <button class="btn-icon resize-control" data-size="tablet" title="Vista tablet">
-                            <i class="fas fa-tablet-alt"></i>
-                        </button>
-                        <button class="btn-icon resize-control active" data-size="desktop" title="Vista escritorio">
-                            <i class="fas fa-desktop"></i>
-                        </button>
-                    </div>
+                    <button class="btn-icon device-btn" data-device="tablet" title="Vista tablet">
+                        <i class="fas fa-tablet-alt"></i>
+                    </button>
+                    <button class="btn-icon device-btn active" data-device="desktop" title="Vista escritorio">
+                        <i class="fas fa-desktop"></i>
+                    </button>
                 </div>
             </div>
             
+            <!-- Contenedor de editores -->
             <div class="editor-content">
-                <!-- Panel de editores de código -->
-                <div class="editor-panel active" id="editorPanel">
-                    <div class="code-editors">
-                        <div class="code-editor active" id="htmlEditor">
-                            <div class="editor-header">
-                                <h3><i class="fab fa-html5"></i> HTML</h3>
-                            </div>
-                            <textarea id="htmlCode"><?php echo htmlspecialchars($htmlContent); ?></textarea>
-                        </div>
-                        
-                        <div class="code-editor" id="cssEditor">
-                            <div class="editor-header">
-                                <h3><i class="fab fa-css3-alt"></i> CSS</h3>
-                            </div>
-                            <textarea id="cssCode"><?php echo htmlspecialchars($cssContent); ?></textarea>
-                        </div>
-                        
-                        <div class="code-editor" id="jsEditor">
-                            <div class="editor-header">
-                                <h3><i class="fab fa-js"></i> JavaScript</h3>
-                            </div>
-                            <textarea id="jsCode"><?php echo htmlspecialchars($jsContent); ?></textarea>
-                        </div>
-                    </div>
+                <!-- Paneles de editores -->
+                <div class="editor-panel active" id="htmlPanel">
+                    <textarea id="htmlCode"><?php echo htmlspecialchars($htmlContent); ?></textarea>
+                </div>
+                
+                <div class="editor-panel" id="cssPanel">
+                    <textarea id="cssCode"><?php echo htmlspecialchars($cssContent); ?></textarea>
+                </div>
+                
+                <div class="editor-panel" id="jsPanel">
+                    <textarea id="jsCode"><?php echo htmlspecialchars($jsContent); ?></textarea>
                 </div>
                 
                 <!-- Panel de vista previa -->
-                <div class="editor-panel" id="previewPanel">
-                    <div class="preview-container">
-                        <iframe id="previewFrame" title="Vista previa del código"></iframe>
-                    </div>
-                </div>
-                
-                <!-- Panel de vista dividida (editor + vista previa) -->
-                <div class="editor-panel" id="splitPanel">
-                    <div class="split-container">
-                        <div class="split-editor">
-                            <div class="code-editors split-mode">
-                                <div class="code-editor active" id="splitHtmlEditor">
-                                    <div class="editor-header">
-                                        <h3><i class="fab fa-html5"></i> HTML</h3>
-                                    </div>
-                                    <textarea id="splitHtmlCode"><?php echo htmlspecialchars($htmlContent); ?></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="split-preview">
-                            <iframe id="splitPreviewFrame" title="Vista previa dividida"></iframe>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Barra de estado inferior -->
-            <div class="editor-statusbar">
-                <div class="statusbar-left">
-                    <span id="cursorPosition">Línea: 1, Columna: 1</span>
-                </div>
-                <div class="statusbar-right">
-                    <span id="autoSaveStatus">Guardado automático: <span class="status-indicator">Activado</span></span>
-                    <span id="lastSaved">Último guardado: Nunca</span>
+                <div class="preview-frame-container device-desktop">
+                    <iframe id="previewFrame" title="Vista previa del código"></iframe>
                 </div>
             </div>
         </div>
@@ -305,27 +265,27 @@ if ($editorMode === 'lesson' && $lessonId) {
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Guardar Proyecto</h2>
-                <button class="modal-close">&times;</button>
+                <button class="modal-close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="saveProjectForm">
                     <div class="form-group">
-                        <label for="modalProjectTitle">Título del Proyecto</label>
-                        <input type="text" id="modalProjectTitle" required>
+                        <label for="saveTitle">Título del Proyecto</label>
+                        <input type="text" id="saveTitle" required>
                     </div>
                     <div class="form-group">
-                        <label for="modalProjectDescription">Descripción (opcional)</label>
-                        <textarea id="modalProjectDescription"></textarea>
+                        <label for="saveDescription">Descripción (opcional)</label>
+                        <textarea id="saveDescription"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="projectVisibility">Visibilidad</label>
-                        <select id="projectVisibility">
-                            <option value="private">Privado (solo yo)</option>
-                            <option value="public">Público (todos)</option>
+                        <label for="saveVisibility">Visibilidad</label>
+                        <select id="saveVisibility">
+                            <option value="0">Privado (solo yo)</option>
+                            <option value="1">Público (todos)</option>
                         </select>
                     </div>
                     <div class="form-group form-actions">
-                        <button type="button" class="btn-secondary modal-cancel">Cancelar</button>
+                        <button type="button" class="btn-secondary" data-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn-primary">Guardar Proyecto</button>
                     </div>
                 </form>
@@ -338,39 +298,23 @@ if ($editorMode === 'lesson' && $lessonId) {
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Ayuda del Editor</h2>
-                <button class="modal-close">&times;</button>
+                <button class="modal-close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
                 <h3>Atajos de Teclado</h3>
                 <ul class="keyboard-shortcuts">
                     <li><kbd>Ctrl</kbd> + <kbd>S</kbd> - Guardar proyecto</li>
                     <li><kbd>Ctrl</kbd> + <kbd>Space</kbd> - Autocompletado</li>
-                    <li><kbd>Alt</kbd> + <kbd>F</kbd> - Formatear código</li>
                     <li><kbd>Ctrl</kbd> + <kbd>/</kbd> - Comentar línea</li>
                     <li><kbd>Ctrl</kbd> + <kbd>F</kbd> - Buscar</li>
-                    <li><kbd>F11</kbd> - Pantalla completa</li>
                 </ul>
                 
                 <h3>Consejos Rápidos</h3>
                 <ul>
                     <li>Utiliza el botón "Actualizar" para ver los cambios en la vista previa.</li>
-                    <li>Activa el "Guardado automático" para guardar tu progreso cada 30 segundos.</li>
-                    <li>Usa la "Vista Dividida" para ver tu código y resultado simultáneamente.</li>
+                    <li>Marca "Actualización automática" para ver los cambios en tiempo real.</li>
                     <li>Prueba diferentes tamaños de pantalla para verificar el diseño responsive.</li>
                 </ul>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Modal de recursos -->
-    <div class="modal" id="resourceModal">
-        <div class="modal-content modal-large">
-            <div class="modal-header">
-                <h2 id="resourceTitle">Recurso</h2>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div id="resourceContent"></div>
             </div>
         </div>
     </div>
@@ -383,27 +327,11 @@ if ($editorMode === 'lesson' && $lessonId) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/javascript/javascript.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/edit/closetag.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/edit/closebrackets.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/foldcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/foldgutter.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/xml-fold.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/brace-fold.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/comment-fold.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/show-hint.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/html-hint.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/css-hint.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/javascript-hint.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/selection/active-line.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/lint/lint.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/lint/html-lint.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/lint/css-lint.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/lint/javascript-lint.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/search/search.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/search/searchcursor.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/dialog/dialog.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/comment/comment.min.js"></script>
-    
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     
     <!-- Script específico del editor -->
     <script src="editor.js"></script>
