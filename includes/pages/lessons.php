@@ -383,9 +383,18 @@ if ($leccionId) {
                     }
                     
                     const lessonId = completeButton.getAttribute('data-lesson-id');
+                    console.log('Marcando lección como completada:', lessonId);
+                    
+                    // Mostrar indicador de carga
+                    const originalButtonText = completeButton.innerHTML;
+                    completeButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
+                    completeButton.disabled = true;
+                    
+                    // Determinar la ruta correcta (relativa a la raíz del sitio)
+                    const ajaxUrl = 'includes/ajax/update_lesson_progress.php';
                     
                     // Enviar solicitud AJAX para marcar como completada
-                    fetch('../includes/ajax/update_lesson_progress.php', {
+                    fetch(ajaxUrl, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -395,12 +404,19 @@ if ($leccionId) {
                             completed: true
                         })
                     })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error en la respuesta del servidor: ' + response.status);
+                        }
+                        return response.json();
+                    })
                     .then(data => {
+                        console.log('Respuesta del servidor:', data);
                         if (data.success) {
                             // Actualizar UI
                             completeButton.classList.add('completed');
                             completeButton.innerHTML = '<i class="fas fa-check-circle"></i> Lección Completada';
+                            completeButton.disabled = false;
                             
                             // Añadir badge a título
                             const lessonTitle = document.querySelector('.lesson-title');
@@ -413,15 +429,68 @@ if ($leccionId) {
                             
                             // Mostrar notificación
                             showNotification('¡Lección completada! Has ganado ' + data.xp + ' XP.', 'success');
+                            
+                            // Actualizar la página después de un breve retraso
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 2000);
                         } else {
-                            showNotification('Error al marcar la lección como completada.', 'error');
+                            // Restaurar botón y mostrar error
+                            completeButton.innerHTML = originalButtonText;
+                            completeButton.disabled = false;
+                            showNotification('Error: ' + (data.message || 'Error al marcar la lección como completada.'), 'error');
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        showNotification('Error al procesar la solicitud.', 'error');
+                        // Restaurar botón
+                        completeButton.innerHTML = originalButtonText;
+                        completeButton.disabled = false;
+                        
+                        // Intentar método alternativo si falla
+                        console.log('Intentando método alternativo...');
+                        marcarLeccionCompletadaAlternativo(lessonId);
                     });
                 });
+            }
+            
+            // Función alternativa para marcar lección como completada
+            function marcarLeccionCompletadaAlternativo(lessonId) {
+                // Usar XMLHttpRequest como alternativa a fetch
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'includes/ajax/debug_progress.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                
+                xhr.onload = function() {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        try {
+                            const data = JSON.parse(xhr.responseText);
+                            console.log('Respuesta alternativa:', data);
+                            showNotification('¡Método alternativo exitoso! Recargando página...', 'success');
+                            
+                            // Recargar para reflejar los cambios
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 1500);
+                        } catch (e) {
+                            console.error('Error parseando respuesta:', e);
+                            showNotification('Error en la respuesta del servidor alternativo.', 'error');
+                        }
+                    } else {
+                        console.error('Error en método alternativo:', xhr.status);
+                        showNotification('Error en el método alternativo.', 'error');
+                    }
+                };
+                
+                xhr.onerror = function() {
+                    console.error('Error de red en método alternativo');
+                    showNotification('Error de conexión. Intente nuevamente más tarde.', 'error');
+                };
+                
+                xhr.send(JSON.stringify({
+                    lesson_id: lessonId,
+                    completed: true
+                }));
             }
         });
         

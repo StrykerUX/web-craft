@@ -1,0 +1,41 @@
+# Habilitar el motor de reescritura
+RewriteEngine On
+
+# Establecer el directorio base
+RewriteBase /
+
+# Permitir CORS para solicitudes AJAX
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "POST, GET, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type"
+</IfModule>
+
+# Permitir archivos PHP en includes/ajax
+<Files ~ "^includes/ajax/.*\.php$">
+    Order allow,deny
+    Allow from all
+</Files>
+
+# Redirigir a index.php si el archivo/directorio no existe
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?page=$1 [QSA,L]
+
+# Configuración PHP
+<IfModule mod_php7.c>
+    php_flag display_errors On
+    php_value max_execution_time 300
+    php_value memory_limit 256M
+    php_value post_max_size 64M
+    php_value upload_max_filesize 64M
+</IfModule>
+
+# Prevenir el acceso a archivos sensibles
+<FilesMatch "^(\.htaccess|config\.php|composer\.json|README\.md)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Prevenir vista de directorios
+Options -Indexes
