@@ -15,6 +15,13 @@ define('WEBCRAFT', true);
 // Incluir archivo de configuración
 require_once 'config.php';
 
+// Verificar y preparar la base de datos
+require_once 'includes/utils/db_check.php';
+checkAndCreateTables();
+
+// Incluir utilidades de seguridad
+require_once 'includes/utils/security.php';
+
 // Iniciar o continuar sesión
 session_name(SESSION_NAME);
 session_start([
@@ -29,8 +36,11 @@ session_start([
 require_once 'includes/auth/auth.php';
 
 // Verificar si hay una cookie "recordarme" y no hay sesión activa
-if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
-    checkRememberMeCookie();
+if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_token'])) {
+    // Esta función debe implementarse en auth.php
+    if (function_exists('loginWithRememberToken')) {
+        loginWithRememberToken($_COOKIE['remember_token']);
+    }
 }
 
 // Función para cargar componentes de página
@@ -164,6 +174,13 @@ if ($page === 'home') {
     <!-- Página específica JS si existe -->
     <?php if (file_exists('assets/js/pages/' . $page . '.js')): ?>
     <script src="assets/js/pages/<?php echo $page; ?>.js"></script>
+    <?php endif; ?>
+    
+    <?php if (DEV_MODE): ?>
+    <!-- Modo de desarrollo: mostrar información de depuración -->
+    <div class="dev-info" style="position: fixed; bottom: 0; right: 0; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; font-size: 12px; z-index: 9999;">
+        <p>Dev Mode: ON | PHP v<?php echo phpversion(); ?> | <?php echo date('Y-m-d H:i:s'); ?></p>
+    </div>
     <?php endif; ?>
 </body>
 </html>
